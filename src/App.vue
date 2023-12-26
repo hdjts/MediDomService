@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="nav">
+ <div class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">MédiDomService</a>
+        <ul class="nav">
+            <li class="nav-item pr-4">
+                <router-link class="nav-link text-white" to="/">Home</router-link>
+            </li>
+            <li class="nav-item pr-4">
+                <router-link class="nav-link text-white" to="/About">About</router-link>
+            </li>
+            <li class="nav-item pr-4">
+                <router-link class="nav-link text-white" to="/users-area">Users Area</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link text-white" to="/Login">Login</router-link>
+            </li>
+        </ul>
+    </div>
+    <div class="container py-4">
+        <router-view />
+    </div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  methods: {
+    // Example method using the router
+    navigateToHome() {
+      this.$router.push('/');
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.navbar{
+  margin:0;
+  padding: 10;
 }
+
+.navbar-brand{
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #fff; /* Change color on hover as desired */
+  text-decoration: underline; /* Add underline on hover */
+  cursor: pointer;
+}
+
 </style>
