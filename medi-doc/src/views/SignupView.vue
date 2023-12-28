@@ -49,14 +49,15 @@
 
         try {
         
-          const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+        const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
         const uid = userCredential.user.uid;
         alert('Registered successfully');
-        this.$router.replace('login');
         const b = doc(a,uid);
         await setDoc(b,{
           email: this.email,
+          role : 'patient'
         });
+        this.$router.replace('login');
 
       } catch (error) {
         v.xhrRequest=false;

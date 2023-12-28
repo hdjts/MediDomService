@@ -49,44 +49,52 @@
         let v = this;
         v.xhrRequest = true;
         try {
-          v.xhrRequest = false;
-          const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-          const uid = userCredential.user.uid;
-          alert('login');
-
-          /* fonction pour ramener les data d'un user spécifique 
-          const userDocRef = doc(db, 'users', uid);
-          const userDocSnapshot = await getDoc(userDocRef);
-   
-
+            v.xhrRequest = false;
+            const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
+            const uid = userCredential.user.uid;
+            alert('login');
+  
+            // fonction pour ramener les data d'un user spécifique 
+            const userDocRef = doc(db, 'users', uid);
+            const userDocSnapshot = await getDoc(userDocRef);
           if (userDocSnapshot.exists()) {
+              const userDataa = userDocSnapshot.data();
+              if (userDataa.role == 'patient') {
+                const userDataString = JSON.stringify(userDataa);
+              this.$router.replace({
+              name: 'patient',
+              query: { userData: userDataString , uid :uid},
+              
+              });
+              }
+              else{
+                onSnapshot(a ,(querySnapshot) => {
+                   const fbusers = []
+                 querySnapshot.forEach((doc)=>{
+                 const b = {
+                   email : doc.data().email
+                 }
+                 fbusers.push(b)
+                 })
+                 this.userData = fbusers
+                 const userDataString = JSON.stringify(this.userData);
+                 if (userDataa.role == 'medecin') {
+                  this.$router.replace({
+                 name: 'Users',
+                 query: { userData: userDataString },
+                 });
+                 } else if (userDataa.role == 'admin'){
+                  this.$router.replace({
+                 name: 'admin',
+                 query: { userData: userDataString },
+                 });
+                 }      
+                
+                })
+              }
+          } 
           
-            const userData = userDocSnapshot.data();
           
-            this.userData = userData;
-          } else {
-            
-            console.log('User document does not exist');
-            console.log(this.userData);
-         
-          }*/
-          
-          onSnapshot(a ,(querySnapshot) => {
-            const fbusers = []
-          querySnapshot.forEach((doc)=>{
-          const b = {
-            email : doc.data().email
-          }
-          fbusers.push(b)
-          })
-          this.userData = fbusers
-          const userDataString = JSON.stringify(this.userData);
-         
-         this.$router.replace({
-          name: 'Users',
-          query: { userData: userDataString },
-          });
-          })
           
         } catch (error) {
           v.xhrRequest = false;
