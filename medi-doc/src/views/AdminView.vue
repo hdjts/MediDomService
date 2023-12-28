@@ -29,12 +29,36 @@
               </form>
             </div>
         </div>
+        <div>
+          <h3>les patient :</h3>
+          <ul v-for="u  in userData">
+            <li v-if="u.role=='patient'"> {{ u.email }} </li>  
+         </ul>
+         <h3>les medecin :</h3>
+         <ul v-for="u  in userData">
+          <li v-if="u.role=='medecin'"> {{ u.email }} </li>  
+         </ul>
+         <h3>les rdv :</h3>
+         <ul v-for="i in rdv">
+          <li> {{ i.date }} </li>  
+          <li> {{ i.time }} </li> 
+          <li> {{ i.patientID }}</li> 
+          <form @submit.prevent="affecter(i)">
+            <select v-model="selectedMedecin" required>
+              <option v-show="medecin.role=='medecin'" v-for="medecin in userData" :value="medecin.uid">{{ medecin.email }}</option>
+            </select>
+            <button>✔</button>
+          </form>
+         </ul>
+        </div>
+
+        
     </div>
     
 </template>
 
 <script>
-    import {auth , a} from '../firebase/index'
+    import {auth , a ,rdv} from '../firebase/index'
     import {createUserWithEmailAndPassword} from 'firebase/auth'
     import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
 export default {
@@ -44,7 +68,8 @@ export default {
             userData : [],
             email:'',
             password:'',
-            
+            rdv:[],
+            selectedMedecin: null,
            }
       },
     methods: {
@@ -66,6 +91,22 @@ export default {
         alert(`Error - ${error.message}`);
       }
     },
+    async affecter(rdvItem) {
+    try {
+      if (this.selectedMedecin) {
+        const rdvRef = doc(rdv, rdvItem.id); 
+        await updateDoc(rdvRef, {
+          medecinID: this.selectedMedecin,
+          status:"coffirmer"
+        });
+        alert('Rendez-vous mis à jour avec le médecin');
+      } else {
+        alert('Veuillez sélectionner un médecin');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du rendez-vous', error);
+    }
+  },
  }, 
     
     mounted() {
@@ -74,6 +115,20 @@ export default {
     this.userData = JSON.parse(userDataString);
     console.log(this.userData);
   }
+  onSnapshot(rdv ,(querySnapshot) => {
+  const fbusers = []
+  querySnapshot.forEach((doc)=>{
+      const usero = {
+       date : doc.data().date,
+       time: doc.data().time,
+       patientID: doc.data().patientID,
+       status: doc.data().status,
+       id:doc.id
+      }
+      fbusers.push(usero)
+  })
+  this.rdv = fbusers
+})
 }
 }
 </script>

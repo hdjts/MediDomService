@@ -72,7 +72,9 @@
                    const fbusers = []
                  querySnapshot.forEach((doc)=>{
                  const b = {
-                   email : doc.data().email
+                   email : doc.data().email,
+                   role : doc.data().role,
+                   uid : doc.id,
                  }
                  fbusers.push(b)
                  })
@@ -81,12 +83,12 @@
                  if (userDataa.role == 'medecin') {
                   this.$router.replace({
                  name: 'Users',
-                 query: { userData: userDataString },
+                 query: { userData: userDataString , uid :uid},
                  });
                  } else if (userDataa.role == 'admin'){
                   this.$router.replace({
                  name: 'admin',
-                 query: { userData: userDataString },
+                 query: { userData: userDataString , uid :uid },
                  });
                  }      
                 
