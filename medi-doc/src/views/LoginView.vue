@@ -30,9 +30,9 @@
 </div>
 </template>
 <script>
-  import { auth, db } from '../firebase/index';
+  import { auth, db ,a} from '../firebase/index';
   import { signInWithEmailAndPassword } from 'firebase/auth';
-  import { doc, getDoc } from 'firebase/firestore';
+  import { doc, getDoc ,onSnapshot} from 'firebase/firestore';
 
   export default {
     name: 'LoginView',
@@ -54,23 +54,40 @@
           const uid = userCredential.user.uid;
           alert('login');
 
-          // Fetch user data from Firestore
+          /* fonction pour ramener les data d'un user spécifique 
           const userDocRef = doc(db, 'users', uid);
           const userDocSnapshot = await getDoc(userDocRef);
-          console.log('User data:', userDocRef);
+   
+
           if (userDocSnapshot.exists()) {
-            // Document exists, you can access its data
+          
             const userData = userDocSnapshot.data();
-            console.log('User data:', userData);
-            // Assign the user data to the component's data property
+          
             this.userData = userData;
           } else {
-            // Document doesn't exist
+            
             console.log('User document does not exist');
+            console.log(this.userData);
+         
+          }*/
+          
+          onSnapshot(a ,(querySnapshot) => {
+            const fbusers = []
+          querySnapshot.forEach((doc)=>{
+          const b = {
+            email : doc.data().email
           }
-
-          // Navigate to the users area
-          // this.$router.replace('users-area');
+          fbusers.push(b)
+          })
+          this.userData = fbusers
+          const userDataString = JSON.stringify(this.userData);
+         
+         this.$router.replace({
+          name: 'Users',
+          query: { userData: userDataString },
+          });
+          })
+          
         } catch (error) {
           v.xhrRequest = false;
           alert(`Error - ${error.message}`);
