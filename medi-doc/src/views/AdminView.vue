@@ -39,15 +39,15 @@
           <li v-if="u.role=='medecin'"> {{ u.email }} </li>  
          </ul>
          <h3>les rdv :</h3>
-         <ul v-for="i in rdv">
-          <li> {{ i.date }} </li>  
-          <li> {{ i.time }} </li> 
-          <li> {{ i.patientID }}</li> 
-          <form @submit.prevent="affecter(i)">
-            <select v-model="selectedMedecin" required>
+         <ul v-for="(i,index) in rdv" :key="index">
+          <li> {{ i.date }} <br> 
+           {{ i.time }}  <br>
+           {{ i.patientID }}<br></li>
+          <form @submit.prevent="()=>affecter(i,index)">
+            <select v-model="selectedMedecin[index]" required>
               <option v-show="medecin.role=='medecin'" v-for="medecin in userData" :value="medecin.uid">{{ medecin.email }}</option>
             </select>
-            <button>✔</button>
+            <button type="submit">✔</button>
           </form>
          </ul>
         </div>
@@ -69,7 +69,7 @@ export default {
             email:'',
             password:'',
             rdv:[],
-            selectedMedecin: null,
+            selectedMedecin:[],
            }
       },
     methods: {
@@ -91,12 +91,13 @@ export default {
         alert(`Error - ${error.message}`);
       }
     },
-    async affecter(rdvItem) {
+    async affecter(rdvItem,index) {
     try {
-      if (this.selectedMedecin) {
+      const selectedMedecinId = this.selectedMedecin[index];
+      if (selectedMedecinId) {
         const rdvRef = doc(rdv, rdvItem.id); 
         await updateDoc(rdvRef, {
-          medecinID: this.selectedMedecin,
+          medecinID: selectedMedecinId,
           status:"coffirmer"
         });
         alert('Rendez-vous mis à jour avec le médecin');
@@ -110,7 +111,7 @@ export default {
  }, 
     
     mounted() {
-        const userDataString = this.$route.query.userData;
+  const userDataString = this.$route.query.userData;
   if (userDataString) {
     this.userData = JSON.parse(userDataString);
     console.log(this.userData);
@@ -123,15 +124,16 @@ export default {
        time: doc.data().time,
        patientID: doc.data().patientID,
        status: doc.data().status,
-       id:doc.id
+       id:doc.id,
+       selectedMedecin: null,
       }
       fbusers.push(usero)
   })
   this.rdv = fbusers
+
 })
 }
 }
 </script>
 <style>
-
 </style>

@@ -23,6 +23,9 @@
         </div>
        </div>
       </form>
+      <div class="col-sm-12 form-group" v-if="status === 'en attente'">
+        <button class="btn btn-danger btn-lg col-sm-5" @click="annulerRDV">Annuler</button>
+      </div>
     </div>
 </div>
 </template>
@@ -37,20 +40,47 @@
         date:'',
         time:'',
         uid:'',
+        status: '',
         userData: [],
       };
     },
     methods: {
-     async RDV(){
-           const b = doc(rdv,this.uid);
-         await setDoc(b,{
-          date: this.date,
-          time: this.time,
-          patientID:this.uid,
-          status:'en attente'
-        });
-  
-      }
+      async RDV() {
+  const appointmentDocRef = doc(rdv, this.uid);
+
+  try {
+    this.xhrRequest = true;
+    await addDoc(rdv, {
+      date: this.date,
+      time: this.time,
+      patientID: this.uid,
+      status: 'en attente',
+    });
+    this.status = 'en attente';
+    this.xhrRequest = false;
+  } catch (error) {
+    this.xhrRequest = false;
+    console.error('Error creating the appointment', error);
+  }
+},
+async RDV() {
+  const appointmentDocRef = doc(rdv, this.uid);
+
+  try {
+    this.xhrRequest = true;
+    await addDoc(rdv, {
+      date: this.date,
+      time: this.time,
+      patientID: this.uid,
+      status: 'en attente',
+    });
+    this.status = 'en attente';
+    this.xhrRequest = false;
+  } catch (error) {
+    this.xhrRequest = false;
+    console.error('Error creating the appointment', error);
+  }
+},
     },
     mounted() {
         const userDataString = this.$route.query.userData;
