@@ -23,6 +23,32 @@
         </div>
        </div>
       </form>
+      <div class="col-sm-12 form-group" v-if="status === 'en attente'">
+        <button class="btn btn-danger btn-lg col-sm-5" @click="annulerRDV">Annuler</button>
+      </div>
+      <div>
+        <h3>consultation</h3>
+        <div v-for="(r,index) in RDVtab">
+            <li>{{ r.date }}</li>
+            <li>{{ r.time }}</li>
+            <li>{{ r.report }}</li>
+              <form id="signup-form" @submit.prevent="()=>affecter(r,index)">
+               <div class="row">
+                 <div class="col-sm-12 form-group">
+                    <label for="text">Feedback</label>
+                    <input type="text" id="text" v-model="feedback[index]" class="form-control form-control-lg">
+                 </div>
+                 <div class="col-sm-12 form-group">
+                    <button v-if="!xhrRequest" class="btn btn-primary btn-lg col-sm-5">feedback</button>
+                    <button v-if="xhrRequest" class="btn btn-primary btn-lg col-sm-5">
+                        <span class="spinner-border spinner-border-sm btn-spn"></span>
+                        wait...
+                    </button>
+                </div>
+               </div>
+              </form>
+        </div>
+      </div>
     </div>
 </div>
 </template>
@@ -37,21 +63,47 @@
         date:'',
         time:'',
         uid:'',
-        userData: {},
+        status: '',
+        feedback:[],
+        userData: [],
+        RDVtab:[],
       };
     },
     methods: {
-     async RDV(){
-           const b = doc(rdv,this.uid);
-         await setDoc(b,{
-          date: this.date,
-          time: this.time,
-          patientID:this.uid,
-          email:this.userData.email,
-          status:'en attente'
-        });
-  
-      }
+      async RDV() {
+  const appointmentDocRef = doc(rdv, this.uid);
+
+  try {
+    this.xhrRequest = true;
+    await addDoc(rdv, {
+      date: this.date,
+      time: this.time,
+      patientID: this.uid,
+      status: 'en attente',
+    });
+    this.status = 'en attente';
+    this.xhrRequest = false;
+  } catch (error) {
+    this.xhrRequest = false;
+    console.error('Error creating the appointment', error);
+  }
+},
+async affecter(rdvItem,index) {
+  try {
+    const selectedMedecinId = this.feedback[index];
+    if (selectedMedecinId) {
+      const rdvRef = doc(rdv, rdvItem.id); 
+      await updateDoc(rdvRef, {
+        feedback : selectedMedecinId,
+      });
+      alert('Rendez-vous mis à jour avec le médecin');
+    } else {
+      alert('Veuillez sélectionner un médecin');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du rendez-vous', error);
+  }
+},
     },
     mounted() {
         const userDataString = this.$route.query.userData;
@@ -62,6 +114,22 @@
     console.log(this.userData);
     console.log(this.uid);
   }
+  onSnapshot(rdv ,(querySnapshot) => {
+  const fbusers = []
+  querySnapshot.forEach((doc)=>{
+      const usero = {
+       date : doc.data().date,
+       time: doc.data().time,
+       patientID: doc.data().patientID,
+       status: doc.data().status,
+       medecinID: doc.data().medecinID,
+       id:doc.id,
+       report: doc.data().report || '', 
+      }
+      fbusers.push(usero)
+  })
+  this.RDVtab = fbusers
+})
     },
   };
 </script>
