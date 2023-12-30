@@ -41,7 +41,7 @@
         email: '',
         password: '',
         xhrRequest: false,
-        userData: [],
+        userData: {},
       };
     },
     methods: {
@@ -63,7 +63,7 @@
                 const userDataString = JSON.stringify(userDataa);
               this.$router.replace({
               name: 'patient',
-              query: { userData: userDataString , uid :uid},
+              query: { userData: userDataString , uid :uid },
               
               });
               }

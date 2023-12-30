@@ -19,11 +19,8 @@
                     <input type="password" id="password" v-model="password" class="form-control form-control-lg">
                  </div>
                  <div class="col-sm-12 form-group">
-                    <button v-if="!xhrRequest" class="btn btn-primary btn-lg col-sm-5">Sign Up</button>
-                    <button v-if="xhrRequest" class="btn btn-primary btn-lg col-sm-5">
-                        <span class="spinner-border spinner-border-sm btn-spn"></span>
-                        wait...
-                    </button>
+                    <button  class="btn btn-primary btn-lg col-sm-5">Sign Up</button>
+                    
                 </div>
                </div>
               </form>
@@ -42,7 +39,8 @@
          <ul v-for="i in rdv">
           <li> {{ i.date }} </li>  
           <li> {{ i.time }} </li> 
-          <li> {{ i.patientID }}</li> 
+          <li> {{ i.patientID }}</li>
+          <li>{{ i.email }}</li> 
           <form @submit.prevent="affecter(i)">
             <select v-model="selectedMedecin" required>
               <option v-show="medecin.role=='medecin'" v-for="medecin in userData" :value="medecin.uid">{{ medecin.email }}</option>
@@ -123,6 +121,7 @@ export default {
        time: doc.data().time,
        patientID: doc.data().patientID,
        status: doc.data().status,
+       email:doc.data().email,
        id:doc.id
       }
       fbusers.push(usero)

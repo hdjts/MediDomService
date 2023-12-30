@@ -37,7 +37,7 @@
         date:'',
         time:'',
         uid:'',
-        userData: [],
+        userData: {},
       };
     },
     methods: {
@@ -47,6 +47,7 @@
           date: this.date,
           time: this.time,
           patientID:this.uid,
+          email:this.userData.email,
           status:'en attente'
         });
   
