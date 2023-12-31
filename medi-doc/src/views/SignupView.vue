@@ -30,8 +30,9 @@
     </div>
     </template>
     <script>
-    import {auth} from '../firebase/index'
+    import {auth , a} from '../firebase/index'
     import {createUserWithEmailAndPassword} from 'firebase/auth'
+    import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
     export default {
       name: 'SignupView',
       data() {
@@ -45,13 +46,19 @@
         async signupRequest() {
           let v=this;
           v.xhrRequest=true;
+
         try {
         
-        await createUserWithEmailAndPassword(auth, this.email, this.password);
+        const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+        const uid = userCredential.user.uid;
         alert('Registered successfully');
+        const b = doc(a,uid);
+        await setDoc(b,{
+          email: this.email,
+          role : 'patient'
+        });
         this.$router.replace('login');
-        // Optionally, redirect the user to another page
-        // this.$router.push('/success');
+
       } catch (error) {
         v.xhrRequest=false;
         alert(`Error - ${error.message}`);

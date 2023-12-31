@@ -4,19 +4,19 @@
         <a class="navbar-brand" href="#">MédiDomService</a>
         <ul class="nav">
             <li class="nav-item pr-4">
-                <router-link class="nav-link text-white" to="/">Home</router-link>
+                <router-link class="nav-link text-white" to="/admin">Admin</router-link>
             </li>
             <li class="nav-item pr-4">
-                <router-link class="nav-link text-white" to="/About">About</router-link>
+                <router-link class="nav-link text-white" to="/patient">patient</router-link>
             </li>
             <li class="nav-item pr-4">
-                <router-link class="nav-link text-white" to="/users-area">Users Area</router-link>
+                <router-link class="nav-link text-white" to="/users-area">medecin</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link text-white" to="/Login">Login</router-link>
             </li>
         </ul>
-    </div>
+  </div>
     <div class="container py-4">
         <router-view />
     </div>
@@ -50,5 +50,7 @@ export default {
   text-decoration: underline; /* Add underline on hover */
   cursor: pointer;
 }
-
+.nav li:not(:last-child){
+  display: none;
+}
 </style>
