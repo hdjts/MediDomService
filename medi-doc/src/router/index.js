@@ -46,7 +46,7 @@ const router = createRouter({
   router.beforeEach((to,from,next)=>{
     const authenticatedUser = auth.currentUser;
     const requiresAuth=to.matched.some(record=>record.meta.requiresAuth);
-    if(requiresAuth && !authenticatedUser) next ('login')
+    if(requiresAuth && !authenticatedUser) next ({path: '/Login'})
     else next()
   })
   export default router

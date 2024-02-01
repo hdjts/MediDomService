@@ -1,12 +1,7 @@
 <template>
   <div class="login-container">
-    <div class="login-image">
-        <!-- Ajoutez ici l'URL de votre image -->
-        <img src="C:\Users\sonia\OneDrive\Documents\sonia sonia\MediDomService\medi-doc\public\background.png" alt="Login Image">
-      </div>  
     <div class="login-content">
-      
-      <div class="login-form">
+      <div class="login-form" id="loginform">
         <h1 class="text-center">Log In</h1>
         <form id="login-form" @submit.prevent="loginUser">
           <div class="form-group">
@@ -30,10 +25,16 @@
         </form>
       </div>
     </div>
+    <div class="login-content">
+        <!-- Ajoutez ici l'URL de votre image 
+        <img src="E:\myproject\projet\MediDomService\medi-doc\public\background.png" alt="Login Image" >-->
+        <img src="../image/background.jpg" alt="Login Image" >
+    </div>  
   </div>
 </template>
 
 <script>
+
   import { auth, db ,a} from '../firebase/index';
   import { signInWithEmailAndPassword } from 'firebase/auth';
   import { doc, getDoc ,onSnapshot} from 'firebase/firestore';
@@ -113,7 +114,7 @@
 
 
 <style scoped>
-  .login-container {
+ /* .login-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,17 +132,45 @@
     overflow: hidden;
     width: 40%;
   }
-
+*/
+.login-content {
+      flex:1;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .login-container {
+      height: 650px;
+      background-color: #fff;
+      padding: 0px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      display: flex;
+    }
+    .login-content img{ 
+      margin: 0%;
+     width: 100%; 
+    height: 650px; 
+    object-fit: cover;
+  }
+  #loginform{
+    margin-top: 70px;
+  }
+  h1{
+    margin-bottom: 100px;
+  }
+  label{
+    margin-bottom: 13px;
+  }
   .login-image {
     flex: 1;
     overflow: hidden;
   }
 
-  .login-image img {
-    width: 80%; /* Ajustez la largeur de l'image selon vos besoins */
-    height: auto; /* Laissez la hauteur auto pour conserver les proportions */
+  /*.login-image img{ 
+     width: 80%; 
+    height: auto; 
     object-fit: cover;
-  }
+  }*/
 
   .login-form {
     flex: 1;
@@ -149,7 +178,7 @@
   }
 
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .form-control {

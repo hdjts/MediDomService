@@ -1,12 +1,12 @@
 <template>
   <div class="sidebar">
-    <img src="./image/logo.png" alt="Logo" class="logo">
+    <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
     <!-- Liens pour différentes sections -->
     <a href="#" @click.prevent="showDashboardManagement">Dashboard</a>
     <a href="#" @click.prevent="showProfilManagement">Profil</a> 
     <a href="#" @click.prevent="showPatientManagement">Patients</a>
     <a href="#" @click.prevent="showRDVManagement">RDV</a>
-    <a href="#" @click.prevent="showfeedbackSection">Feedback</a>
+    <a href="#" @click.prevent="showFeedbackSection">Feedback</a>
   </div> 
  <div class="content">
     <div class="head">
@@ -21,22 +21,33 @@
     <div class="medecin">
     <div class="med" id="dashboard" v-if="showDashboardSection">
       <div class="box">
-          <h3><img src="./public/patient.png" alt="patient"> 
+          <h3><img src="../image/patient.png" alt="patient"> 
             <span class="space-after-text">Patients</span> {{ countPatients }}</h3>
       </div>
       <div class="box">
-       <h3><img src="./public/rdv.png" alt="RDV"> 
+       <h3><img src="../image/rdv.png" alt="RDV"> 
         <span class="space-after-text">Consultations</span> {{countConsultations }}</h3>
       </div>
       <div class="box">
-       <h3><img src="./public/compte_rendue.png" alt="service">
+       <h3><img src="../image/compte_rendue.png" alt="service">
        <span class="space-after-text">Compte rendu</span>{{countReports}}</h3>
       </div>
       <div class="box">
-          <h3><img src="./public/feedback.png" alt="patient"> 
-            <span class="space-after-text">Feedbacks</span> {{ }}</h3>
-      </div>
+  <h3>
+    <img src="../image/patient.png" alt="patient">
+    <span class="space-after-text">Feedbacks</span> {{ countFeedbacks }}
+  </h3>
+  <ul v-if="showFeedbackSection">
+    <li v-for="feedback in feedbackData" :key="feedback.id">
+      <p>{{ feedback.text }}</p>
+      <!-- Add other feedback properties as needed -->
+    </li>
+  </ul>
+</div>
     </div>
+
+
+    
   </div>
     <div class="row">
       <div class="col-sm-12">
@@ -134,7 +145,7 @@
         <div class="report-section">
           <strong>Compte rendu:</strong>
           <div v-if="!value.report" class="no-report">
-            <textarea v-model="reportInput" placeholder="Entrer votre compte rendu"></textarea>
+            <textarea v-model="reportInputMap[value.id]" placeholder="Entrer votre compte rendu"></textarea>
           </div>
           <div v-else>
             {{ value.report }}
@@ -151,26 +162,43 @@
   </tbody>
 </table>
 </div>
+<div v-if="showFeedbackSection">
+    <h3>Feedback</h3>
+    <div v-for="feedbackItem in feedbackData" :key="feedbackItem.id">
+      <div class="feedback-item">
+        <p>{{ feedbackItem.text }}</p>
+        <!-- Add other feedback properties as needed -->
+      </div>
+    </div>
+  </div>
+
 
         <div v-else>
          Aucune donnée RDV disponible.
         </div>
      </div>
    </div>
+   
 </div>
+
 
 </template>
 <script>
   import {auth , a ,rdv} from '../firebase/index'
-  import {createUserWithEmailAndPassword} from 'firebase/auth'
+  import {createUserWithEmailAndPassword,updateEmail,
+  signOut,} from 'firebase/auth'
   import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
   export default {
+    props:{
+      
+    },
   name: 'UsersView',
   data() {
     return {
       uid:'',
       userData: [],
       rdv:[],
+      reportInputMap: {},
       reportInput: '',
       showSignupForm: false,
       showProfilSection: false, // Ajout de la nouvelle variable
@@ -179,6 +207,8 @@
       showDashboardSection: true, 
       loggedInMedecinEmail: '',
       newMedecinEmail: '',
+      showFeedbackSection: false,
+      feedbackData: [],
     };
   },
   computed: {
@@ -191,11 +221,17 @@
   countReports() {
   return this.rdv.filter(value => value.medecinID === this.uid && value.report !== '').length;
 },
+uniqueReportId() {
+      return (rdvId) => rdvId + '_' + Math.floor(Math.random() * 1000);
+    },
   countPatients() {
       const patients = this.userData.filter(user => user.role === 'patient');
       console.log('Liste des patients :', patients);
       return patients.length;
   },
+  countFeedbacks() {
+      return this.feedbackData.length;
+    },
 },
   methods: {
 async updateEmail() {
@@ -222,15 +258,31 @@ try {
   console.error('Erreur lors de la mise à jour de l\'e-mail', erreur);
 }
 },
+
+
+
 async updateReport(rdvId) {
-    try {
-      const rdvRef = doc(rdv, rdvId);
-      await updateDoc(rdvRef, { report: this.reportInput });
-      alert('Rapport mis à jour avec succès');
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du rapport', error);
-    }
-  },
+      try {
+        const rdvRef = doc(rdv, rdvId);
+        const uniqueReportId = rdvId;
+
+        await updateDoc(rdvRef, {
+          reportId: uniqueReportId,
+          report: this.reportInputMap[rdvId] || '',
+        });
+
+        alert('Rapport mis à jour avec succès');
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du rapport', error);
+      }
+    },
+  
+
+
+
+
+
+
 
     async cancelRDV(rdvId) {
     try {
@@ -292,16 +344,22 @@ async updateReport(rdvId) {
      hideProfilSection() {
       this.showProfilSection = false;
     },
-    async logout() {
-    try {
-      await signOut(auth);
-      alert('Déconnexion réussie');
-      // Redirigez l'utilisateur vers la page de connexion ou effectuez d'autres actions nécessaires.
-    } catch (error) {
-      console.error('Erreur lors de la déconnexion', error);
-    }
-  },
+   async logout() {
+  try {
+    await signOut(auth);
+    alert('Déconnexion réussie');
+    this.$router.push({ name: 'login' }).catch(err => console.error(err));
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion', error);
+  }
 },
+
+
+
+  },
+
+
+
 
 
 
@@ -334,6 +392,7 @@ querySnapshot.forEach((doc)=>{
     fbusers.push(usero)
 })
 this.rdv = fbusers
+console.log('Feedback Data:', this.feedbackData);
 })
   },
   
@@ -527,5 +586,13 @@ thead {
   background-color: #41B8D5;
   color: white;
 }
+.feedback-section {
+    margin-top: 20px;
+}
 
+.feedback-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
 </style>

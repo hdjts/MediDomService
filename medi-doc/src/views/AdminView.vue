@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="sidebar">
-      <img src="./image/logo.png" alt="Logo" class="logo">
+      <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
       <!-- Liens pour différentes sections -->
       <a href="#" @click.prevent="showDashboardManagement">Dashboard</a>
       <a href="#" @click.prevent="showMedecinManagement">Médecins</a> 
@@ -22,19 +22,19 @@
     <div class="medecin">
       <div class="med" id="dashboard" v-if="showDashboardSection">
         <div class="box">
-          <h3><img src="./public/doctor.png" alt="medecin"> 
+          <h3><img src="../image/doctor.png" alt="medecin"> 
               <span class="space-after-text">Médecins</span>   {{ countMedecins }}</h3>
         </div>
         <div class="box">
-            <h3><img src="./public/patient.png" alt="patient"> 
+            <h3><img src="../image/patient.png" alt="patient"> 
               <span class="space-after-text">Patients</span> {{ countPatients }}</h3>
         </div>
         <div class="box">
-         <h3><img src="./public/rdv.png" alt="RDV"> 
+         <h3><img src="../image/rdv.png" alt="RDV"> 
           <span class="space-after-text">Consultations</span> {{ rdv.length }}</h3>
         </div>
         <div class="box">
-         <h3><img src="./public/service.png" alt="service">
+         <h3><img src="../image/service.png" alt="service">
           Services</h3>
         </div>
       </div>

@@ -97,8 +97,10 @@ async affecter(rdvItem,index) {
         feedback : selectedMedecinId,
       });
       alert('Rendez-vous mis à jour avec le médecin');
+      this.$emit('feedback-added', rdvItem);
     } else {
       alert('Veuillez sélectionner un médecin');
+      
     }
   } catch (error) {
     console.error('Erreur lors de la mise à jour du rendez-vous', error);
