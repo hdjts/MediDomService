@@ -54,4 +54,13 @@ export default {
 .nav li:not(:last-child){
   display: none;
 }
+.py-4{
+  margin: 0;
+  padding: O;
+  max-width: none;
+
+}
+body{
+  overflow-x: hidden;
+}
 </style>

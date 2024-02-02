@@ -10,7 +10,7 @@
   </div> 
  <div class="content">
     <div class="head">
-      <div class="coté"><h1>Medecin Dashboard</h1>
+      <div class="coté" style="margin-left: 80px;"><h1>Medecin Dashboard</h1>
       </div>
       <div class="coté">
         <a href="Login">
@@ -51,7 +51,7 @@
   </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="med" v-if="showProfilSection">
+        <div class="med" style="margin-left:90px;" v-if="showProfilSection">
            <h3 class="medecin-title"> Profil </h3> 
           <table class="medecin-table">
            
@@ -93,9 +93,9 @@
           </ul>-->
         </div>
         
-        <div class="med" v-if="showPatientSection">
-          <h3 class="medecin-title"> The patients </h3> 
-          <table class="medecin-table">
+        <div class="med" style="margin-left: 90px;" v-if="showPatientSection">
+          <h3 class="medecin-title" > The patients </h3> 
+          <table class="medecin-table" >
             <thead>
               <tr>
                 <th>NSS</th>
@@ -124,7 +124,7 @@
             </tbody>
           </table>
        </div>
-       <div v-if="showRDVSection">
+       <div style="margin-left:90px;" v-if="showRDVSection">
         <h3 class="medecin-title"> The RDV </h3>
 <table>
   <thead>

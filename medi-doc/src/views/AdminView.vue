@@ -11,15 +11,14 @@
     </div> 
      <div class="content">
        <div class="head">
-         <div class="coté"><h1>Admin Dashboard</h1>
-         </div>
+         <div class="coté" style="margin-left: 10%;"><h1>Admin Dashboard</h1></div>
          <div class="coté">
           <a href="Login">
             <button class="log" @click="logout">Logout</button>
           </a>
          </div>
       </div>
-    <div class="medecin">
+    <div class="medecin" style="margin-left: 20%;">
       <div class="med" id="dashboard" v-if="showDashboardSection">
         <div class="box">
           <h3><img src="../image/doctor.png" alt="medecin"> 
@@ -39,43 +38,50 @@
         </div>
       </div>
     </div>
-          <div class="row">
-             <div class="col-sm-5 m-auto" v-if="showMedecinSection"> 
-                <div class="text-center mb-4">
-                  <h4>Add a doctor </h4>
+    <div class="row">
+    <div class="col-sm-5 m-auto"  v-if="showMedecinSection">
+        <div class="text-center mb-4">
+            <h4>Add a doctor </h4>
+        </div>
+        <form id="signup-form" @submit.prevent="signupRequest" class="form-container">
+            <div class="row">
+                <!-- Complete Name and Email -->
+                <div class="form-field col-sm-12">
+                    <input type="text" id="nom" v-model="nom" placeholder="Complete name" class="form-control form-control-lg">
                 </div>
-                    <form id="signup-form" @submit.prevent="signupRequest" class="form-container">
-                        <div class="row">
-                         <div class="form-field">
-                            <input type="text" id="nom" v-model="nom" placeholder="Complete name" class="form-control form-control-lg">
-                          </div>
-                           <div class="form-field">
-                            <input type="email" id="email" v-model="email" placeholder="Email adress"  class="form-control form-control-lg">
-                           </div>
-                          <div class="form-field">
-                             <select id="specialite" v-model="specialite" required>
-                               <option disabled value="" selected>Spécialité</option>
-                               <option value="cardiologie">Cardiologie</option>
-                               <option value="dermatologie">Dermatologie</option>
-                               <option value="généraliste">Généraliste</option>
-                               </select>
-                            </div>
-                         <div class="form-field">
-                           <input type="password" id="password" v-model="password" placeholder="password" class="form-control form-control-lg">
-                         </div>
-                         <div class="form-field">
-                           <button v-if="!xhrRequest" id="btt" class="btn btn-primary btn-lg col-sm-5">Sign Up</button>
-                           <button v-if="xhrRequest" class="btn btn-primary btn-lg col-sm-5">
-                              <span class="spinner-border spinner-border-sm btn-spn"></span>
-                          wait...
-                            </button>
-                          </div>
-                       </div>
-                      </form>
-                 </div>
-           </div>
+                <div class="form-field col-sm-12">
+                    <input type="email" id="email" v-model="email" placeholder="Email address" class="form-control form-control-lg">
+                </div>
+                
+                <!-- Select Bar for Speciality -->
+                <div class="form-field col-sm-12">
+                    <select id="specialite" v-model="specialite" required>
+                        <option disabled value="" selected>Spécialité</option>
+                        <option value="cardiologie">Cardiologie</option>
+                        <option value="dermatologie">Dermatologie</option>
+                        <option value="généraliste">Généraliste</option>
+                    </select>
+                </div>
+                
+                <!-- Password -->
+                <div class="form-field col-sm-12">
+                    <input type="password" id="password" v-model="password" placeholder="Password" class="form-control form-control-lg">
+                </div>
+                
+                <!-- Sign Up Button -->
+                <div class="form-field col-sm-12">
+                    <button v-if="!xhrRequest" id="btt" class="btn btn-primary btn-lg">Sign Up</button>
+                    <button v-if="xhrRequest" class="btn btn-primary btn-lg">
+                        <span class="spinner-border spinner-border-sm btn-spn"></span> Wait...
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
         <div>
-           <div class="table-container">
+           <div class="table-container" style="margin-left: 8%;">
               <div class="table-wrapper">
                 <div class="med" v-if="showMedecinSection">
                    <h3 class="medecin-title"> The doctors </h3> 
@@ -100,37 +106,40 @@
                      </tbody>
                   </table>
                 </div>
-           <div class="med" v-if="showPatientSection">
-              <h3 class="medecin-title"> The patients </h3> 
-                 <table class="medecin-table">
-                  <thead>
-                      <tr>
-                         <th>NSS</th>
-                          <th>Last name</th>
-                         <th>First name</th>
-                          <th>date of birth</th>
-                          <th>location</th>
-                          <th>Phone number</th>
-                          <th>Email</th>
-                          <th>Action</th>
-                       </tr>
-                   </thead>
-                   <tbody class="conte">
-                    <tr v-for="(u, index) in userData" :key="index">
-                        <td v-if="u.role === 'patient'">{{ u.Nss }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.Nom }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.prenom }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.Age }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.Adresse }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.Telephone }}</td>
-                        <td v-if="u.role === 'patient'">{{ u.email }}</td>   
-                        <td v-if="u.role === 'patient'">
+    <div class="med" v-if="showPatientSection" style="text-align: center;margin-left:70px">
+    <h3 class="medecin-title"> The patients </h3> 
+    <div class="table-responsive">
+        <table class="medecin-table table mx-auto">
+            <thead>
+                <tr>
+                    <th>NSS</th>
+                    <th>Last name</th>
+                    <th>First name</th>
+                    <th>Date of birth</th>
+                    <th>Location</th>
+                    <th>Phone number</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="conte">
+                <tr v-for="(u, index) in userData" :key="index">
+                    <td v-if="u.role === 'patient'">{{ u.Nss }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.Nom }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.prenom }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.Age }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.Adresse }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.Telephone }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.email }}</td>   
+                    <td v-if="u.role === 'patient'">
                         <button @click="deletePatient(u.patientID)" class="boutt">Delete</button>
-                        </td>
-                    </tr>
-                   </tbody>
-                </table>
-          </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
         <div class="med" v-if="showRDVSection">
         <h3 class="medecin-title"> The RDV </h3>
            <table class="medecin-table">
@@ -170,6 +179,7 @@
           </div>
    </div>
 </template>
+
   <script>
     import {auth , a ,rdv} from '../firebase/index'
     import {createUserWithEmailAndPassword} from 'firebase/auth'
@@ -516,6 +526,9 @@
       background-color:rgba(255, 0, 0, 0.947);
       color:white;
       border: none;
+  }
+  .med{
+    margin-left: 5%;
   }
   .form-container {
     display: flex;
