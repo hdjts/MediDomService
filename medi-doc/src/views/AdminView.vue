@@ -4,7 +4,7 @@
       <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
       <!-- Liens pour différentes sections -->
       <a href="#" @click.prevent="showDashboardManagement">Dashboard</a>
-      <a href="#" @click.prevent="showMedecinManagement">Médecins</a> 
+      <a href="#" @click.prevent="showMedecinManagement">Doctors</a> 
       <a href="#" @click.prevent="showPatientManagement">Patients</a>
       <a href="#" @click.prevent="showRDVManagement">RDV</a>
       <a href="#" @click.prevent="showServicesSection">Services</a>
@@ -23,7 +23,7 @@
       <div class="med" id="dashboard" v-if="showDashboardSection">
         <div class="box">
           <h3><img src="../image/doctor.png" alt="medecin"> 
-              <span class="space-after-text">Médecins</span>   {{ countMedecins }}</h3>
+              <span class="space-after-text">Doctors</span>   {{ countMedecins }}</h3>
         </div>
         <div class="box">
             <h3><img src="../image/patient.png" alt="patient"> 
@@ -42,12 +42,12 @@
           <div class="row">
              <div class="col-sm-5 m-auto" v-if="showMedecinSection"> 
                 <div class="text-center mb-4">
-                  <h4>Ajouter un medecin </h4>
+                  <h4>Add a doctor </h4>
                 </div>
                     <form id="signup-form" @submit.prevent="signupRequest" class="form-container">
                         <div class="row">
                          <div class="form-field">
-                            <input type="text" id="nom" v-model="nom" placeholder="Nom complet" class="form-control form-control-lg">
+                            <input type="text" id="nom" v-model="nom" placeholder="Complete name" class="form-control form-control-lg">
                           </div>
                            <div class="form-field">
                             <input type="email" id="email" v-model="email" placeholder="Email adress"  class="form-control form-control-lg">
@@ -78,13 +78,13 @@
            <div class="table-container">
               <div class="table-wrapper">
                 <div class="med" v-if="showMedecinSection">
-                   <h3 class="medecin-title"> Les médecins </h3> 
+                   <h3 class="medecin-title"> The doctors </h3> 
                       <table class="medecin-table">
                         <thead>
                           <tr>
-                           <th>Nom</th>
+                           <th>Name</th>
                            <th>Email</th>
-                           <th>Specialité</th>
+                           <th>Speciality</th>
                            <th>Action</th>
                          </tr>
                         </thead>
@@ -101,16 +101,16 @@
                   </table>
                 </div>
            <div class="med" v-if="showPatientSection">
-              <h3 class="medecin-title"> Les patients </h3> 
+              <h3 class="medecin-title"> The patients </h3> 
                  <table class="medecin-table">
                   <thead>
                       <tr>
                          <th>NSS</th>
-                          <th>Nom</th>
-                         <th>Prenom</th>
-                          <th>Age</th>
-                          <th>Adresse</th>
-                          <th>Telephone</th>
+                          <th>Last name</th>
+                         <th>First name</th>
+                          <th>date of birth</th>
+                          <th>location</th>
+                          <th>Phone number</th>
                           <th>Email</th>
                           <th>Action</th>
                        </tr>
@@ -132,22 +132,25 @@
                 </table>
           </div>
         <div class="med" v-if="showRDVSection">
-        <h3 class="medecin-title"> Les RDV </h3>
+        <h3 class="medecin-title"> The RDV </h3>
            <table class="medecin-table">
             <thead>
              <tr>
               <th>Date</th>
-              <th>heure</th>
-              <th>Patient</th>
-              <th>Symptômes </th>
-              <th>Medecin </th>
+              <th>Time</th>
+              <th>Patient ID</th>
+              <th>Addtional Informations</th>
+              <th>Doctor</th>
+              
+              
              </tr>
            </thead>
              <tbody class="conte">
                  <tr v-for="(i,index) in rdv" :key="index">
                    <td> {{ i.date }} </td> 
                      <td> {{ i.time }} </td>
-                    <td> {{ i.patientID }}</td>
+                    <td>{{ i.name }}<br>
+                       {{ i.patientID }} </td>
                     <td></td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
@@ -397,22 +400,25 @@
       display: flex;
       flex-direction: column;
     }
-    .log{
-      border-radius: 20px;
-      height: 44px;
-      width: 150px;
-      font-size: 18px;
-      font-weight: 600;
-      padding: 0 30px;
-      letter-spacing: 1px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background-color:#41B8D5;
-      color:white;
-      border: none;
-    } 
+    .log {
+  position: absolute;
+  top: 10px; /* Adjust the top distance as needed */
+  right: 10px; /* Adjust the right distance as needed */
+  border-radius: 20px;
+  height: 44px;
+  width: 150px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0 30px;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #41B8D5;
+  color: white;
+  border: none;
+}
     .log:hover{
       background-color: #3677A3;
     }

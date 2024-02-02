@@ -19,43 +19,40 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-      <h1 class="logo me-auto"><router-link to="/"> 
+  <div class="container d-flex align-items-center">
+    <h1 class="logo me-auto">
+      <router-link to="/">
         <img class="logo-image" src='../image/logoo-removebg-preview.png' alt="MediDom Logo">
-      </router-link></h1>
+      </router-link>
+    </h1>
 
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          
-          <li>
-    <button class="nav-button" @click="scrollToSection('hero')">Home</button>
-  </li>
-  <!-- <li>
-    <button class="nav-button" @click="scrollToSection('about')">About</button>
-  </li> -->
-  <li>
-    <button class="nav-button" @click="scrollToSection('about')">Services</button>
-  </li>
-  <li>
-    <button class="nav-button" @click="scrollToSection('services')">Departments</button>
-  </li>
-  <li>
-    <button class="nav-button" @click="scrollToSection('doctors')">Doctors</button>
-  </li>
-  <li>
-    <button class="nav-button" @click="scrollToSection('contact')">Contact</button>
-  </li>
-        </ul>
-        <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
-      </nav>
-      <li>
-        <button class="appointment-btn" @click="scrollToSection('appointment')">Make an appointment</button>
-      </li>
-      <!--<router-link to="/#appointment" class="appointment-btn" @click.prevent="scrollToSection('appointment')">
-  <span class="d-none d-md-inline">Make an</span> Appointment
-</router-link>-->
+    <nav id="navbar" class="navbar order-last order-lg-0">
+      <ul>
+        <li>
+          <button class="nav-button" @click="scrollToSection('hero')">Home</button>
+        </li>
+        <li>
+          <button class="nav-button" @click="scrollToSection('about')">Services</button>
+        </li>
+        <li>
+          <button class="nav-button" @click="scrollToSection('services')">Departments</button>
+        </li>
+        <li>
+          <button class="nav-button nav-button-doctors" @click="scrollToSection('doctors')">Doctors</button>
+        </li>
+        <li>
+          <button class="nav-button" @click="scrollToSection('contact')">Contact</button>
+        </li>
+      </ul>
+    </nav>
+
+    <div>
+      <button class="appointment-btn" @click="scrollToSection('appointment')" style="border: none;">Make an appointment</button>
     </div>
-  </header><!-- End Header -->
+  </div>
+</header>
+
+  <!-- End Header -->
 
 
     <!-- ======= Hero Section ======= -->
@@ -74,52 +71,58 @@
 
 <!-- ======= Why Us Section ======= -->
 <section id="why-us" class="why-us">
-      <div class="container">
+  <div class="container" style="height: 300px; position: relative;">
 
-        <div class="row">
-          <div class="col-lg-4 d-flex align-items-stretch">
-            <div class="content">
-              <h3>Why Choose MediDom Services?</h3>
-              <p>
-                Welcome to MediDom Services, where healthcare meets convenience. Here are a few reasons why choosing us for your medical and paramedical needs is the right decision.
-              </p>
-              <div class="text-center">
-                <router-link to="#" class="more-btn" @click="scrollToSection('about')">Learn More <i class="bx bx-chevron-right"></i></router-link>
-
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-8 d-flex align-items-stretch">
-            <div class="icon-boxes d-flex flex-column justify-content-center">
-              <div class="row">
-                <div class="col-xl-4 d-flex align-items-stretch">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <i class='bx bx-building-house'></i>                    <h4>Convenience</h4>
-                    <p>We bring healthcare to your doorstep. No need to travel to a clinic; our qualified medical professionals come to you.</p>
-                  </div>
-                </div>
-                <div class="col-xl-4 d-flex align-items-stretch">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <i class='bx bx-time-five' ></i>
-                      <h4>Flexible Scheduling</h4>
-                    <p>With our easy online appointment system, you have control over when and where you receive medical services</p>
-                  </div>
-                </div>
-                <div class="col-xl-4 d-flex align-items-stretch">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <!-- <i class='bx bxs-group'></i>  -->
-                    <i class="fa-solid fa-user-doctor"></i>
-                                       <h4>Qualified Professionals</h4>
-                    <p>Our team of experienced doctors and paramedics are dedicated to providing high-quality care in the comfort of your home.</p>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End services content-->
+<div class="row align-items-start">
+  <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="content" style="margin-top: 8px; padding: 35px 30px;">
+      <h3 style="font-size: 24px;">Why Choose MediDom Services?</h3>
+      <p>
+        Welcome to MediDom Services, where healthcare meets convenience. Here are a few reasons why choosing us for your medical and paramedical needs is the right decision.
+      </p>
+      <div class="text-center">
+        <router-link to="#" class="more-btn" @click="scrollToSection('about')">Learn More <i class="bx bx-chevron-right"></i></router-link>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8 d-flex align-items-stretch mt-2 mt-lg-0">
+    <div class="icon-boxes d-flex flex-column justify-content-start">
+      <div class="row">
+        <!-- Service 1 -->
+        <div class="col-xl-4 d-flex align-items-stretch">
+          <div class="icon-box mt-2 mt-xl-0">
+            <i class='bx bx-building-house'></i>
+            <h4>Convenience</h4>
+            <p>We bring healthcare to your doorstep. No need to travel to a clinic; our qualified medical professionals come to you.</p>
           </div>
         </div>
-
+        <!-- Service 2 -->
+        <div class="col-xl-4 d-flex align-items-stretch">
+          <div class="icon-box mt-2 mt-xl-0">
+            <i class='bx bx-time-five'></i>
+            <h4>Flexible Scheduling</h4>
+            <p>With our easy online appointment system, you have control over when and where you receive medical services</p>
+          </div>
+        </div>
+        <!-- Service 3 -->
+        <div class="col-xl-4 d-flex align-items-stretch">
+          <div class="icon-box mt-2 mt-xl-0">
+            <!-- <i class='bx bxs-group'></i>  -->
+            <i class="fa-solid fa-user-doctor"></i>
+            <h4>Qualified Professionals</h4>
+            <p>Our team of experienced doctors and paramedics are dedicated to providing high-quality care in the comfort of your home.</p>
+          </div>
+        </div>
       </div>
-    </section><!-- End Why Us Section -->
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- End services content-->
+          
+ </section><!-- End Why Us Section -->
       
 <!-- ======= services Section ======= -->
 <section id="about" class="about">
@@ -205,88 +208,111 @@
 
 
   <!-- Appointment Section -->
-
   <section id="appointment" class="appointment section-bg">
-    <div class="container">
+  <div class="container">
+    <div class="section-title">
+      <h2>Make an Appointment</h2>
+      <p>Booking with MediDom is a breeze. Simply choose your preferred time, location, and, if you wish, select your preferred doctor and department. Our team will handle the rest, ensuring your health, your way.</p>
+    </div>
 
-      <div class="section-title">
-        <h2>Make an Appointment</h2>
-        <p>Booking with MediDom is a breeze. Simply choose your preferred time, location, and, if you wish, select your preferred doctor and department. Our team will handle the rest, ensuring your health, your way.</p>
+    <form @submit.prevent="submitForm" class="php-email-form">
+      <div class="row">
+    <div class="col-md-4 form-group mt-3">
+      <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars" required>
+      <div class="validate"></div>
+    </div>
+
+    <div class="col-md-4 form-group mt-3">
+  <input v-model="formData.firstName" type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name" :data-rule="'minlen:2'" data-msg="Please enter at least 2 characters" required>
+  <div class="validate"></div>
+</div>
+<div class="col-md-4 form-group mt-3">
+  <input v-model="formData.lastName" type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name" :data-rule="'minlen:2'" data-msg="Please enter at least 2 characters" required>
+  <div class="validate"></div>
+</div>
+
+   
+
+  </div>
+
+      <div class="row">
+        <div class="col-md-4 form-group mt-3">
+      <input v-model="formData.age" type="number" name="age" class="form-control" id="age" placeholder="Your Age" required>
+      <div class="validate"></div>
+    </div>
+        
+    <div class="col-md-4 form-group mt-3">
+      <input v-model="formData.phone" type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars" required>
+      <div class="validate"></div>
+    </div>
+        <div class="col-md-4 form-group mt-3">
+      <input v-model="formData.location" type="text" name="location" class="form-control" id="location" placeholder="Your Location" required>
+      <div class="validate"></div>
+    </div>
+
+    
+    <div class="col-md-4 form-group mt-3">
+      <input v-model="formData.date" type="date" name="date" class="form-control" id="date" >
+      <div class="validate"></div>
+    </div>
+    
+  
+        <div class="col-md-4 form-group mt-3">
+          <select v-model="formData.department" name="department" id="department" class="form-select">
+            <option value="">Select Department</option>
+            <option value="Department 1">General Medicine</option>
+            <option value="Department 2">Pediatrics</option>
+            <option value="Department 3">Paramedical Services</option>
+            <option value="Department 4">ORL Care Center</option>
+            <option value="Department 5">Geriatrics</option>
+            <option value="Department 6">Mental Health and Wellness</option>
+          </select>
+          <div class="validate"></div>
+        </div>
+        
+      
+        
+        <div class="col-md-4 form-group mt-3">
+          <div class="checkbox-wrapper">
+            <input id="terms-checkbox-37" name="checkbox" type="checkbox">
+            <label class="terms-label" for="terms-checkbox-37">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200" class="checkbox-svg">
+                <mask fill="white" id="path-1-inside-1_476_5-37">
+                  <rect height="200" width="200"></rect>
+                </mask>
+                <rect mask="url(#path-1-inside-1_476_5-37)" stroke-width="40" class="checkbox-box" height="200" width="200"></rect>
+                <path stroke-width="15" d="M52 111.018L76.9867 136L149 64" class="checkbox-tick"></path>
+              </svg>
+              <span class="label-text">Emergency</span>
+            </label>
+          </div>
+        </div>
       </div>
 
-      <form @submit.prevent="submitForm" class="php-email-form">
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <input v-model="formData.name" type="text" name="name" class="form-control" id="name" placeholder="Your Name" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars">
-            <div class="validate"></div>
-          </div>
-          <div class="col-md-4 form-group mt-3 mt-md-0">
-            <input v-model="formData.email" type="email" class="form-control" name="email" id="email" placeholder="Your Email" :data-rule="'email'" data-msg="Please enter a valid email">
-            <div class="validate"></div>
-          </div>
-          <div class="col-md-4 form-group mt-3 mt-md-0">
-            <input v-model="formData.phone" type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars">
-            <div class="validate"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 form-group mt-3">
-            <input v-model="formData.date" type="datetime" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars">
-            <div class="validate"></div>
-          </div>
-          <div class="col-md-4 form-group mt-3">
-            <select v-model="formData.department" name="department" id="department" class="form-select">
-              <option value="">Select Department</option>
-              <option value="Department 1">General Medicine</option>
-              <option value="Department 2">Pediatrics</option>
-              <option value="Department 3">Paramedical Services</option>
-              <option value="Department 4">Emergency Medicine</option>
-              <option value="Department 5">Geriatrics</option>
-              <option value="Department 6">Mental Health and Wellness</option>
-
-            </select>
-            <div class="validate"></div>
-          </div>
-          <div class="col-md-4 form-group mt-3">
-            <select v-model="formData.doctor" name="doctor" id="doctor" class="form-select">
-              <option value="">Select Doctor</option>
-              <option value="Doctor 1">Walter White</option>
-              <option value="Doctor 2">Sarah Jhonson</option>
-              <option value="Doctor 3">Daniel Williams</option>
-              <option value="Doctor 4">Emily Clark</option>
-
-
-            </select>
-            <div class="validate"></div>
-          </div>
-        </div>
-
-        <div class="form-group mt-3">
+      <div class="row">
+        <div class="col-md-12 form-group mt-3">
           <textarea v-model="formData.message" class="form-control" name="message" rows="5" placeholder="Additional Informations(Optional)"></textarea>
           <div class="validate"></div>
         </div>
-        <div class="mb-3">
-          <div class="loading" v-if="isLoading">Loading</div>
-          <div class="error-message" v-if="errorMessage">{{ errorMessage }}</div>
-          <div class="sent-message" v-if="successMessage">Your appointment request has been sent successfully. Thank you!</div>
-        </div>
-        <div class="text-center"> <!-- <button  type="submit" :disabled="isLoading">Make an Appointment
-        
-          
-        
-        
-        </button></div> -->
-        <button class="butto" :disabled="isLoading" >
-          Make an Appointment
-  <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
-    <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" fill-rule="evenodd"></path>
-  </svg>
-</button></div>
-      </form>
+      </div>
 
-    </div>
-    
-  </section><!-- End Appoint Section -->
+      <div class="mb-3">
+        <div class="loading" v-if="isLoading">Loading</div>
+        <div class="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+        <div class="sent-message" v-if="successMessage">Your appointment request has been sent successfully. Thank you!</div>
+      </div>
+
+      <div class="text-center">
+        <button class="butto" :disabled="isLoading" style="border:none">Make an Appointment
+          <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
+            <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" fill-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+  <!-- End Appoint Section -->
 
 
 
@@ -483,7 +509,6 @@
       <i class="bi bi-arrow-up-short"></i>
     </a>
   </div>
-
 </template>
 
 <script>
@@ -808,6 +833,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+body, html {
+    margin: 0;
+    padding: 0;
+}
 
 a {
   color: #1977cc;
@@ -995,6 +1024,7 @@ h6 {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .nav-button:hover {
   color: #3291e6;}
   
@@ -1009,6 +1039,9 @@ h6 {
   background-size: cover;
   margin-bottom: -200px;
   background: url('../image/hero-bg.jpg');
+  background-position: center;
+  background-repeat: repeat-x;
+  background-attachment: fixed;
 }
 
 #hero .container {
@@ -1089,6 +1122,9 @@ h6 {
   #hero {
     height: 110vh;
   }
+}
+.nav-button-doctors {
+  margin-left: 42px;
 }
 
 
@@ -1214,6 +1250,7 @@ section {
   background: #1977cc;
   border-radius: 4px;
   color: #fff;
+  height: 200px;
 }
 
 .why-us .content h3 {
@@ -1684,7 +1721,7 @@ button:hover::before {
 label {
   display: block;
   margin-bottom: 5px;
-  color: #555;
+  color: #353434;
 }
 
 input {
@@ -1704,84 +1741,6 @@ input {
   border-radius: 10px;
   text-align: center;
 }
-#progressbar {
-  margin-bottom: 30px;
-  overflow: hidden;
-  /*CSS counters to number the steps*/
-
-  counter-reset: step;
-}
-#progressbar li {
-  list-style-type: none;
-  color: #000;
-  text-transform: uppercase;
-  font-size: 9px;
-  width: 25%;
-  float: left;
-  position: relative;
-}
-#progressbar li:before {
-  content: counter(step);
-  counter-increment: step;
-  width: 20px;
-  line-height: 20px;
-  display: block;
-  font-size: 10px;
-  color: #000;
-  background: #ccc;
-  border-radius: 3px;
-  margin: 0 auto 5px auto;
-}
-/*progressbar connectors*/
-#progressbar li:after {
-  content: '';
-  width: 100%;
-  height: 2px;
-  background: #ccc;
-  position: absolute;
-  left: -50%;
-  top: 9px;
-  z-index: -1;
-  /*put it behind the numbers*/
-
-}
-#progressbar li:first-child:after {
-  /*connector not needed before the first step*/
-
-  content: none;
-}
-/*marking active/completed steps green*/
-/*The number of the step and the connector before it = green*/
-#progressbar li.active:before,
-#progressbar li.active:after {
-  background: #67d5bf;
-  color: #000;
-}
-/* #form-container {
-   width: 80%;
-  margin: auto;
-  background-color: #ffffff;
-  padding: 20px; 
-  border-radius: 10px;
-  box-shadow: 5px 15px 10px rgba(0, 0, 0, 0.1);
- 
-} */
-
-.form-step {
-  /* display: none;
-  animation: fadeIn 0.5s ease-in-out;
-  margin-bottom: 20px; */
-  display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 5px 0;
-    border-bottom: 1px solid #ccc;
-}
-.btn-send-message{
-  white-space: nowrap;
-  width: auto;
-}
 
 @keyframes fadeIn {
   from {
@@ -1795,7 +1754,7 @@ input {
 }
 
 h2 {
-  color: #333;
+  color: #1a1818;
 }
 .butto {
   position: relative;
@@ -1815,6 +1774,7 @@ h2 {
   outline: none;
   overflow: hidden;
   font-size: 15px;
+  white-space: nowrap;
   width: auto;
 }
 
@@ -1865,6 +1825,46 @@ h2 {
   to {
     left: 100%;
   }
+}
+
+
+.checkbox-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-wrapper .terms-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-wrapper .terms-label .label-text {
+  margin-left: 10px;
+}
+
+.checkbox-wrapper .checkbox-svg {
+  width: 30px;
+  height: 30px;
+}
+
+.checkbox-wrapper .checkbox-box {
+  fill: rgba(115, 109, 109, 0.425);
+  stroke: #6fa1d0;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  transition: stroke-dashoffset 0.6s ease-in;
+}
+
+.checkbox-wrapper .checkbox-tick {
+  stroke: #6fa1d0;
+  stroke-dasharray: 172;
+  stroke-dashoffset: 172;
+  transition: stroke-dashoffset 0.6s ease-in;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .terms-label .checkbox-box,
+  .checkbox-wrapper input[type="checkbox"]:checked + .terms-label .checkbox-tick {
+  stroke-dashoffset: 0;
 }
 
 
@@ -2377,6 +2377,10 @@ h2 {
 .back-to-top.active {
   visibility: visible;
   opacity: 1;
+}
+.btn-send-message{
+white-space: nowrap;
+width:auto;
 }
 
 .datepicker-dropdown {

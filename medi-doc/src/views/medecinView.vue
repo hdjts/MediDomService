@@ -60,15 +60,15 @@
               <td></td>
             </tr>
             <tr>
-              <td>Nom </td>
+              <td>Last name </td>
               <td></td>
             </tr>
             <tr>
-            <td>Prenom </td>
+            <td>First Name </td>
             <td></td>
             </tr>
             <tr>
-              <td>Specialité</td>
+              <td>Department</td>
               <td></td>
               </tr>
             <tr>
@@ -79,7 +79,7 @@
             </tr>
           
             <tr>
-              <td>telephone</td>
+              <td>Phone number</td>
               <td></td>
             </tr>
             
@@ -94,16 +94,16 @@
         </div>
         
         <div class="med" v-if="showPatientSection">
-          <h3 class="medecin-title"> Les patients </h3> 
+          <h3 class="medecin-title"> The patients </h3> 
           <table class="medecin-table">
             <thead>
               <tr>
                 <th>NSS</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Age</th>
-                <th>Adresse</th>
-                <th>Telephone</th>
+                <th>Last name</th>
+                <th>First name</th>
+                <th>Date of birth</th>
+                <th>Location</th>
+                <th>Phone number</th>
                 <th>Email</th>
                 <th>Action</th>
                 </tr>
@@ -125,14 +125,14 @@
           </table>
        </div>
        <div v-if="showRDVSection">
-        <h3 class="medecin-title"> Les RDV </h3>
+        <h3 class="medecin-title"> The RDV </h3>
 <table>
   <thead>
     <tr>
       <th>Date</th>
       <th>Time</th>
       <th>Patient ID</th>
-      <th>Compte Rendu</th>
+      <th>Report</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -143,7 +143,7 @@
       <td>{{ value.patientID }}</td>
       <td>
         <div class="report-section">
-          <strong>Compte rendu:</strong>
+          <strong>Report:</strong>
           <div v-if="!value.report" class="no-report">
             <textarea v-model="reportInputMap[value.id]" placeholder="Entrer votre compte rendu"></textarea>
           </div>
@@ -173,9 +173,7 @@
   </div>
 
 
-        <div v-else>
-         Aucune donnée RDV disponible.
-        </div>
+        
      </div>
    </div>
    
@@ -442,22 +440,25 @@ display: flex;
 flex-wrap: wrap;
 justify-content: space-between; /* Ajustez cela selon vos besoins pour espacer les boîtes */
 }
-.log{
-border-radius: 20px;
-height: 44px;
-width: 150px;
-font-size: 18px;
-font-weight: 600;
-padding: 0 30px;
-letter-spacing: 1px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-text-align: center;
-background-color:#41B8D5;
-color:white;
-border: none;
-} 
+.log {
+  position: absolute;
+  top: 10px; /* Adjust the top distance as needed */
+  right: 10px; /* Adjust the right distance as needed */
+  border-radius: 20px;
+  height: 44px;
+  width: 150px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0 30px;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #41B8D5;
+  color: white;
+  border: none;
+}
 .log:hover{
 background-color: #3677A3;
 }
