@@ -1,35 +1,40 @@
 <template>
-<div class="row">
-    <div class="col-sm-5 m-auto">
-      <div class="text-center mb-4">
-      <h1>Log In</h1>
-   </div>
-      <form id="login-form" @submit.prevent="loginUser">
-       <div class="row">
-         <div class="col-sm-12 form-group">
-            <label for="email">Email address </label>
-            <input type="email" id="email" v-model="email" class="form-control form-control-lg">
-         </div>
-         <div class="col-sm-12 form-group">
-            <label for="password">Password </label>
-            <input type="password" id="password" v-model="password" class="form-control form-control-lg">
-         </div>
-         <div class="col-sm-12 form-group">
-            <button v-if="!xhrRequest" class="btn btn-primary btn-lg col-sm-4">Login</button>
-            <button v-if="xhrRequest" class="btn btn-primary btn-lg col-sm-5">
-                    <span class="spinner-border spinner-border-sm btn-spn"></span>
-                    wait...
+  <div class="login-container">
+    <div class="login-content">
+      <div class="login-form" id="loginform">
+        <h1 class="text-center">Log In</h1>
+        <form id="login-form" @submit.prevent="loginUser">
+          <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" id="email" v-model="email" class="form-control" aria-label="Email address" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" v-model="password" class="form-control" aria-label="Password" required>
+          </div>
+          <div class="form-group">
+            <button v-if="!xhrRequest" class="btn-login">Login</button>
+            <button v-if="xhrRequest" class="btn btn-primary btn-block" disabled>
+              <span class="spinner-border spinner-border-sm btn-spn"></span>
+              Wait...
             </button>
-         </div>
-         <div class="col-sm-12 form-group mt-5">
-                 <p>Don't have an account? <router-link to="/Signup">Sign Up</router-link></p>
-             </div>
-       </div>
-      </form>
+          </div>
+          <div class="form-group mt-3">
+            <p class="text-center">Don't have an account? <router-link to="/Signup">Sign Up</router-link></p>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+    <div class="login-content">
+        <!-- Ajoutez ici l'URL de votre image 
+        <img src="E:\myproject\projet\MediDomService\medi-doc\public\background.png" alt="Login Image" >-->
+        <img src="../image/background.jpg" alt="Login Image" >
+    </div>  
+  </div>
 </template>
+
 <script>
+
   import { auth, db ,a} from '../firebase/index';
   import { signInWithEmailAndPassword } from 'firebase/auth';
   import { doc, getDoc ,onSnapshot} from 'firebase/firestore';
@@ -109,8 +114,95 @@
 
 
 <style scoped>
-    .btn-spn{
-      position:relative;
-      top:-3px;
+ /* .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .login-content {
+    display: flex;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 40%;
+  }
+*/
+.login-content {
+      flex:1;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
-    </style>
+    .login-container {
+      height: 650px;
+      background-color: #fff;
+      padding: 0px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      display: flex;
+    }
+    .login-content img{ 
+      margin: 0%;
+     width: 100%; 
+    height: 650px; 
+    object-fit: cover;
+  }
+  #loginform{
+    margin-top: 70px;
+  }
+  h1{
+    margin-bottom: 100px;
+  }
+  label{
+    margin-bottom: 13px;
+  }
+  .login-image {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /*.login-image img{ 
+     width: 80%; 
+    height: auto; 
+    object-fit: cover;
+  }*/
+
+  .login-form {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .btn-spn {
+    position: relative;
+    top: -3px;
+  }
+  .btn-login {
+    background-color: #41B8D5; /* Couleur de fond du bouton */
+    color: #fff; /* Couleur du texte du bouton */
+    transition: background-color 0.3s ease; /* Animation de transition */
+    border: none;
+    border-radius: 25px;
+  }
+
+  .btn-login:hover {
+    background-color: #31839b; /* Nouvelle couleur de fond au survol */
+  }
+</style>

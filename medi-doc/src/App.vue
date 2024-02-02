@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
- <div class="navbar navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">MédiDomService</a>
-        <ul class="nav">
+ <!--<div class="navbar navbar-dark bg-primary"> </div> -->
+        <!--<a class="navbar-brand" href="#">MédiDomService</a>-->
+      <!-- <ul class="nav">
             <li class="nav-item pr-4">
                 <router-link class="nav-link text-white" to="/admin">Admin</router-link>
             </li>
@@ -11,12 +11,12 @@
             </li>
             <li class="nav-item pr-4">
                 <router-link class="nav-link text-white" to="/users-area">medecin</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link text-white" to="/Login">Login</router-link>
-            </li>
-        </ul>
-  </div>
+            </li>-->
+          <!-- <li class="nav-item">
+                <router-link class="nav-link text-white" to="/Login" id="log">Login</router-link>
+            </li>-
+        </ul>-->
+ <!--</div>-->
     <div class="container py-4">
         <router-view />
     </div>
@@ -29,7 +29,7 @@ export default {
   methods: {
     // Example method using the router
     navigateToHome() {
-      this.$router.push('/');
+      this.$router.push('/login');
     }
   }
 }
@@ -45,8 +45,9 @@ export default {
   font-weight: bold;
 }
 
+
 .nav-link:hover {
-  color: #fff; /* Change color on hover as desired */
+  color:blue; /* Change color on hover as desired */
   text-decoration: underline; /* Add underline on hover */
   cursor: pointer;
 }
