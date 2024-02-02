@@ -14,7 +14,7 @@
          <div class="coté"><h1>Admin Dashboard</h1>
          </div>
          <div class="coté">
-          <a href="App.vue">
+          <a href="Login">
             <button class="log" @click="logout">Logout</button>
           </a>
          </div>
@@ -278,14 +278,16 @@
         }
       },
       async logout() {
-      try {
-        await signOut(auth);
-        alert('Déconnexion réussie');
-        // Redirigez l'utilisateur vers la page de connexion ou effectuez d'autres actions nécessaires.
-      } catch (error) {
-        console.error('Erreur lors de la déconnexion', error);
-      }
-    },
+  try {
+    await signOut(auth);
+    alert('Déconnexion réussie');
+    // Redirect the user to the login page
+    this.$router.push('/login');
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion', error);
+  }
+},
+
       },
    computed: {
       // Propriété calculée pour le nombre de médecins

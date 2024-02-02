@@ -29,7 +29,7 @@ export default {
   methods: {
     // Example method using the router
     navigateToHome() {
-      this.$router.push('/');
+      this.$router.push('/login');
     }
   }
 }

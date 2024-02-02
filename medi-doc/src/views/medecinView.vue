@@ -13,7 +13,7 @@
       <div class="coté"><h1>Medecin Dashboard</h1>
       </div>
       <div class="coté">
-        <a href="App.vue">
+        <a href="Login">
           <button class="log" @click="logout">Logout</button>
         </a>
       </div>
