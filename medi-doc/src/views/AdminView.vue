@@ -18,8 +18,8 @@
           </a>
          </div>
       </div>
-    <div class="medecin" style="margin-left: 20%;">
-      <div class="med" id="dashboard" v-if="showDashboardSection">
+    <div class="medecin" >
+      <div id="dashboard" v-if="showDashboardSection">
         <div class="box">
           <h3><img src="../image/doctor.png" alt="medecin"> 
               <span class="space-after-text">Doctors</span>   {{ countMedecins }}</h3>
