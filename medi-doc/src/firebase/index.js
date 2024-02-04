@@ -13,10 +13,12 @@ const firebaseConfig = {
   const auth = getAuth(app);
   const db = getFirestore(app);
   const a = collection(db,'users');
-  const rdv = collection(db,'RDV')
+  const rdv = collection(db,'RDV');
+  const fbk = collection(db,'Feedbk');
   export {
       auth,
       db,
       a,
-      rdv
+      rdv,
+      fbk,
   }

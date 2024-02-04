@@ -215,7 +215,7 @@
       <p>Booking with MediDom is a breeze. Simply choose your preferred time, location, and, if you wish, select your preferred doctor and department. Our team will handle the rest, ensuring your health, your way.</p>
     </div>
 
-    <form @submit.prevent="submitForm" class="php-email-form">
+    <form @submit.prevent="submitForm()" class="php-email-form">
       <div class="row">
     <div class="col-md-4 form-group mt-3">
       <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars" required>
@@ -260,12 +260,12 @@
         <div class="col-md-4 form-group mt-3">
           <select v-model="formData.department" name="department" id="department" class="form-select">
             <option value="">Select Department</option>
-            <option value="Department 1">General Medicine</option>
-            <option value="Department 2">Pediatrics</option>
-            <option value="Department 3">Paramedical Services</option>
-            <option value="Department 4">ORL Care Center</option>
-            <option value="Department 5">Geriatrics</option>
-            <option value="Department 6">Mental Health and Wellness</option>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Paramedical Services">Paramedical Services</option>
+            <option value="ORL Care Center">ORL Care Center</option>
+            <option value="Geriatrics">Geriatrics</option>
+            <option value="Mental Health and Wellness">Mental Health and Wellness</option>
           </select>
           <div class="validate"></div>
         </div>
@@ -451,20 +451,20 @@
         </div>
 
         <div class="col-lg-8 mt-5 mt-lg-0">
-          <form @submit.prevent="submitForm" class="php-email-form">
+          <form @submit.prevent="FeedBack" class="php-email-form">
             <div class="row">
               <div class="col-md-6 form-group">
-                <input v-model="formData.name" type="text" class="form-control" id="name" placeholder="Your Name" required>
+                <input v-model="formFeedBk.name" type="text" class="form-control" id="name" placeholder="Your Name" required>
               </div>
               <div class="col-md-6 form-group mt-3 mt-md-0">
-                <input v-model="formData.email" type="email" class="form-control" id="email" placeholder="Your Email" required>
+                <input v-model="formFeedBk.email" type="email" class="form-control" id="email" placeholder="Your Email" required>
               </div>
             </div>
             <div class="form-group mt-3">
-              <input v-model="formData.subject" type="text" class="form-control" id="subject" placeholder="Subject" required>
+              <input v-model="formFeedBk.subject" type="text" class="form-control" id="subject" placeholder="Subject" required>
             </div>
             <div class="form-group mt-3">
-              <textarea v-model="formData.message" class="form-control" rows="5" placeholder="Message" required></textarea>
+              <textarea v-model="formFeedBk.message" class="form-control" rows="5" placeholder="Message" required></textarea>
             </div>
             <div class="my-3">
               <div class="loading" v-if="loading">Loading</div>
@@ -521,7 +521,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Swiper from 'swiper';
-
+import {auth , a, rdv , fbk} from '../firebase/index'
+    import {createUserWithEmailAndPassword} from 'firebase/auth'
+    import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
 export default {
   components: {
   // CountUp,
@@ -542,6 +544,17 @@ export default {
         phoneNumberr: '',
         age: '',
         emaill: '',
+
+        nss: '',
+      firstName: '',
+      lastName: '',
+      age: '',
+      phone: '',
+      location: '',
+      date: '',
+      department: '',
+      uid: '',
+
        //appointment
       email: "medidomservices@example.com",
       phoneNumber: "+213 547298543",
@@ -704,14 +717,22 @@ export default {
             ],
       
       formData: {
-        name: '',
-        email: '',
-        phone: '',
-        date: '',
-        department: '',
-        doctor: '',
-        message: '',
+        nss:'',
+        firstName:'',
+        lastName:'',
+        age:'',
+        phone:'',
+        location:'',
+        date:'',
+        department:'',
       },
+      formFeedBk: {
+        name:'',
+        email:'',
+        message:'',
+        subject:''
+      },
+
       isLoading: false,
       errorMessage: '',
       successMessage: '',
@@ -745,7 +766,30 @@ export default {
         },
       },  
       });
-      
+      const userDataString = this.$route.query.userData;
+        const uid = this.$route.query.uid;
+        if (userDataString) {
+    this.userData = JSON.parse(userDataString);
+    this.uid = uid;
+    console.log(this.userData);
+    console.log(this.uid);
+  }
+  onSnapshot(rdv ,(querySnapshot) => {
+  const fbusers = []
+  querySnapshot.forEach((doc)=>{
+      const usero = {
+       date : doc.data().date,
+       time: doc.data().time,
+       patientID: doc.data().patientID,
+       status: doc.data().status,
+       medecinID: doc.data().medecinID,
+       id:doc.id,
+       report: doc.data().report || '', 
+      }
+      fbusers.push(usero)
+  })
+  this.RDVtab = fbusers
+})
   },
   methods: {
     //ap
@@ -802,18 +846,98 @@ export default {
       // Add logic to scroll to the top of the page
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    submitForm() {
-      // Add your form submission logic here
+    async RDV() {
+      const appointmentDocRef = doc(rdv, this.uid);
 
-      this.isLoading = true;
-
-      // Simulate an API request with a delay
-      setTimeout(() => {
-        // Reset loading state and show success message
+      try {
+        this.isLoading = true;
+        await addDoc(rdv, {
+          nss: this.formData.nss,
+          date: this.formData.date,
+          firstName:this.formData.firstName,
+          lastName:this.formData.lastName,
+          age:this.formData.age,
+          phone:this.formData.phone,
+          location:this.formData.location,
+          department:this.formData.department,
+          patientID: this.uid,
+          status: 'en attente',
+        });
+        console.log('ok');
         this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error creating the appointment', error);
+        throw error; // Re-throw the error to handle it in the submitForm method
+      }
+    },
+    async FeedBack() {
+      const appointmentDocRef = doc(rdv, this.uid);
+
+      try {
+        this.isLoading = true;
+        await addDoc(fbk, {
+          name:this.formFeedBk.name,
+          email:this.formFeedBk.email,
+          message:this.formFeedBk.message,
+          subject:this.formFeedBk.subject,
+          patientID: this.uid,
+        });
+       
+        console.log('ok');
+        this.isLoading = false;
+        setTimeout(() => {
+          // Reset loading state and show success message
+          this.isLoading = false;
+          this.successMessage = 'Your appointment request has been sent successfully. Thank you!';
+
+        }, 2000);
+        /*
+        this.formFeedBk.name,
+        this.formFeedBk.email,
+        this.formFeedBk.message,
+        this.formFeedBk.subject;*/
+        Object.keys(this.formFeedBk).forEach((key) => {
+        this.formFeedBk[key] = '';
+      });
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error creating the appointment', error);
+        throw error; // Re-throw the error to handle it in the submitForm method
+      }
+    },
+
+    async submitForm() {
+      try {
+        await this.RDV();
+
+        // Optionally, you can reset the form data here
+        this.nss = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.age = '';
+        this.phone = '';
+        this.location = '';
+        this.date = '';
+        this.department = '';
+
+        // Display success message or perform other actions
         this.successMessage = 'Your appointment request has been sent successfully. Thank you!';
-      
-      }, 2000);
+        this.isLoading = true;
+
+// Simulate an API request with a delay
+        setTimeout(() => {
+          // Reset loading state and show success message
+          this.isLoading = false;
+          this.successMessage = 'Your appointment request has been sent successfully. Thank you!';
+
+        }, 2000);
+      } catch (error) {
+        console.error('Error submitting appointment request', error);
+
+        // Display error message or perform other actions
+        this.errorMessage = 'Error submitting appointment request. Please try again later.';
+      }
     },
   },
   created() {
@@ -827,9 +951,12 @@ export default {
     
     },
    
-    
-}
+   
+  
+};
+
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
