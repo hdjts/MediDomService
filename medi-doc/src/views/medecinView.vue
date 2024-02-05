@@ -57,11 +57,11 @@
            
             <tr>
               <td>ID </td>
-              <td></td>
+              <td>{{med.uid}}</td>
             </tr>
             <tr>
               <td>Last name </td>
-              <td></td>
+              <td>{{ med.lastName }}</td>
             </tr>
             <tr>
             <td>First Name </td>
@@ -110,12 +110,12 @@
             </thead>
             <tbody class="conte">
               <tr v-for="(u, index) in userData" :key="index">
-                <td v-if="u.role === 'patient'">{{ u.Nss }}</td>
-                <td v-if="u.role === 'patient'">{{ u.Nom }}</td>
-                <td v-if="u.role === 'patient'">{{ u.prenom }}</td>
-                <td v-if="u.role === 'patient'">{{ u.Age }}</td>
-                <td v-if="u.role === 'patient'">{{ u.Adresse }}</td>
-                <td v-if="u.role === 'patient'">{{ u.Telephone }}</td>
+                <td v-if="u.role === 'patient'">{{ u.nss }}</td>
+                <td v-if="u.role === 'patient'">{{ u.firstName}}</td>
+                <td v-if="u.role === 'patient'">{{ u.lastName }}</td>
+                <td v-if="u.role === 'patient'">{{ u.age }}</td>
+                <td v-if="u.role === 'patient'">{{ u.location }}</td>
+                <td v-if="u.role === 'patient'">{{ u.phone}}</td>
                 <td v-if="u.role === 'patient'">{{ u.email }}</td>   
                 <td v-if="u.role === 'patient'">
                 <button @click="deletePatient(u.patientID)" class="boutt">Delete</button>
@@ -207,6 +207,7 @@
       newMedecinEmail: '',
       showFeedbackSection: false,
       feedbackData: [],
+      med:{}
     };
   },
   computed: {
@@ -352,7 +353,9 @@ async updateReport(rdvId) {
   }
 },
 
-
+countReports() {
+ this.med = this.userData.filter(value => value.uid === this.uid );
+},
 
   },
 
