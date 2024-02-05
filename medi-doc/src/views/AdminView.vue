@@ -149,8 +149,9 @@
               <th>Time</th>
               <th>Pantient full name</th>
               <th>Patient ID</th>
+             
+              <th>Departement selected</th>
               <th></th>
-              <th>Addtional Informations</th>
               <th>Doctor</th>
               
               
@@ -162,7 +163,7 @@
                     <td> {{ i.time }} </td>
                     <td>{{ getUserFullName(i.patientID) }}</td>
                     <td>{{ i.patientID }} </td>
-                    <td>{{ i.addInfo }}</td>
+                    <td>{{ i.department}}</td>
                     <td></td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
@@ -226,6 +227,7 @@
          firstName: doc.data().firstName,
          lastName: doc.data().lastName,
          addInfo: doc.data().addInfo,
+         department: doc.data().department,
          id:doc.id,
          selectedMedecin: null,
         }
@@ -247,6 +249,13 @@
 },
 
       methods: {
+      
+        getSelectedMedecinDepartment(patientID) {
+  const selectedRDV = this.rdv.find(rdvItem => rdvItem.patientID === patientID);
+  console.log('Selected RDV:', selectedRDV);
+  return selectedRDV ? selectedRDV.departement : '';
+},
+      
         async signupRequest() {
   let v = this;
   v.xhrRequest = true;
