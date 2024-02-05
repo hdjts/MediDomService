@@ -100,7 +100,7 @@
                 </tr>
             </thead>
             <tbody class="conte">
-              <tr v-for="(u, index) in userData" :key="index">
+              <tr v-for="(u, index) in filteredPatients" :key="index">
                 <td v-if="u.role === 'patient'">{{ u.nss }}</td>
                 <td v-if="u.role === 'patient'">{{ u.firstName}}</td>
                 <td v-if="u.role === 'patient'">{{ u.lastName }}</td>
@@ -241,6 +241,15 @@ console.log('Feedback Data:', this.feedbackData);
   },
   
   computed: {
+    filteredPatients() {
+    const patientsWithAppointments = this.userData.filter(user => {
+      // Check if the user has an appointment with the current doctor
+      return this.rdv.some(appointment => appointment.patientID === user.uid && appointment.medecinID === this.uid);
+    });
+
+    return patientsWithAppointments;
+  },
+
   countConsultations() {
     return this.rdv.filter(value => value.medecinID === this.uid).length;
   },
