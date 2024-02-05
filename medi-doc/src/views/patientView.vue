@@ -863,6 +863,16 @@ export default {
           patientID: this.uid,
           status: 'en attente',
         });
+        const Ref = doc(a, this.uid);
+        await updateDoc(Ref, {
+          nss: this.formData.nss,
+          date: this.formData.date,
+          firstName:this.formData.firstName,
+          lastName:this.formData.lastName,
+          age:this.formData.age,
+          phone:this.formData.phone,
+          location:this.formData.location,
+          });
         console.log('ok');
         this.isLoading = false;
       } catch (error) {
@@ -883,6 +893,7 @@ export default {
           subject:this.formFeedBk.subject,
           patientID: this.uid,
         });
+        
        
         console.log('ok');
         this.isLoading = false;

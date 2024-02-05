@@ -19,7 +19,7 @@
          </div>
       </div>
     <div class="medecin" >
-      <div id="dashboard" v-if="showDashboardSection">
+      <div  id="dashboard" v-if="showDashboardSection">
         <div class="box">
           <h3><img src="../image/doctor.png" alt="medecin"> 
               <span class="space-after-text">Doctors</span>   {{ countMedecins }}</h3>
@@ -47,7 +47,7 @@
             <div class="row">
                 <!-- Complete Name and Email -->
                 <div class="form-field col-sm-12">
-                    <input type="text" id="nom" v-model="nom" placeholder="Complete name" class="form-control form-control-lg">
+                    <input type="text" id="nom" v-model="name" placeholder="Complete name" class="form-control form-control-lg">
                 </div>
                 <div class="form-field col-sm-12">
                     <input type="email" id="email" v-model="email" placeholder="Email address" class="form-control form-control-lg">
@@ -96,7 +96,7 @@
                         </thead>
                        <tbody class="conte">
                         <tr v-for="(u, index) in userData" :key="index">
-                         <td v-if="u.role === 'medecin'">{{ u.nom }}</td>
+                         <td v-if="u.role === 'medecin'">{{ u.name }}</td>
                          <td v-if="u.role === 'medecin'">{{ u.email }}</td>
                          <td v-if="u.role === 'medecin'">{{ u.specialite }}</td>
                          <td v-if="u.role === 'medecin'">
@@ -124,12 +124,12 @@
             </thead>
             <tbody class="conte">
                 <tr v-for="(u, index) in userData" :key="index">
-                    <td v-if="u.role === 'patient'">{{ u.Nss }}</td>
-                    <td v-if="u.role === 'patient'">{{ u.Nom }}</td>
-                    <td v-if="u.role === 'patient'">{{ u.prenom }}</td>
-                    <td v-if="u.role === 'patient'">{{ u.Age }}</td>
-                    <td v-if="u.role === 'patient'">{{ u.Adresse }}</td>
-                    <td v-if="u.role === 'patient'">{{ u.Telephone }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.nss }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.firstName }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.lastName }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.age }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.location }}</td>
+                    <td v-if="u.role === 'patient'">{{ u.phone }}</td>
                     <td v-if="u.role === 'patient'">{{ u.email }}</td>   
                     <td v-if="u.role === 'patient'">
                         <button @click="deletePatient(u.patientID)" class="boutt">Delete</button>
@@ -190,7 +190,9 @@
           return{
               userData : [],
               email:'',
+              name :'',
               password:'',
+              specialite:'',
               rdv:[],
               selectedMedecin:[],
               showSignupForm: false,
@@ -210,9 +212,18 @@
           alert('Doctor Registered successfully');
           const b = doc(a,uid);
           await setDoc(b,{
+            name :this.name,
             email: this.email,
+            specialite:this.specialite,
             role : 'medecin'
           });
+         let c = {
+          name :this.name,
+          email :this.email,
+          specialite: this.specialite,
+          role : 'medecin'
+         }
+         this.userData.push(c)
         } catch (error) {
           v.xhrRequest=false;
           alert(`Error - ${error.message}`);
@@ -314,6 +325,11 @@
         console.log('Liste des patients :', patients);
         return patients.length;
       },
+      /*countFeedbacks() {
+        const feedback = this.userData.filter(user => user.role === 'patient');
+        console.log('Liste des patients :', feedback);
+        return feedback.length;
+      },*/
     },
       mounted() {
     const userDataString = this.$route.query.userData;
@@ -334,9 +350,24 @@
         }
         fbusers.push(usero)
     })
-    this.rdv = fbusers
+     this.rdv = fbusers
   
   })
+  /*onSnapshot(fbk ,(querySnapshot) => {
+  const fbusers = []
+  querySnapshot.forEach((doc)=>{
+      const usero = {
+       name : doc.data().name,
+       email: doc.data().email,
+       patientID: doc.data().patientID,
+       message: doc.data().message,
+       id:doc.id,
+       subject: doc.data().subject || '', 
+      }
+      fbusers.push(usero)
+  })
+  this.RDVtab = fbusers
+})*/
   }
   }
   </script>

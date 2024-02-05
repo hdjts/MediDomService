@@ -78,8 +78,17 @@
                  querySnapshot.forEach((doc)=>{
                  const b = {
                    email : doc.data().email,
+                   name : doc.data().name,
+                   specialite : doc.data().specialite,
                    role : doc.data().role,
                    uid : doc.id,
+                   nss: doc.data().nss,
+          date: doc.data().date,
+          firstName:doc.data().firstName,
+          lastName:doc.data().lastName,
+          age:doc.data().age,
+          phone:doc.data().phone,
+          location:doc.data().location,
                  }
                  fbusers.push(b)
                  })
