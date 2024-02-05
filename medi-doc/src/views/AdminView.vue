@@ -147,7 +147,9 @@
              <tr>
               <th>Date</th>
               <th>Time</th>
+              <th>Pantient full name</th>
               <th>Patient ID</th>
+              <th></th>
               <th>Addtional Informations</th>
               <th>Doctor</th>
               
@@ -156,10 +158,11 @@
            </thead>
              <tbody class="conte">
                  <tr v-for="(i,index) in rdv" :key="index">
-                   <td> {{ i.date }} </td> 
-                     <td> {{ i.time }} </td>
-                    <td>{{ i.name }}<br>
-                       {{ i.patientID }} </td>
+                    <td> {{ i.date }} </td> 
+                    <td> {{ i.time }} </td>
+                    <td>{{ getUserFullName(i.patientID) }}</td>
+                    <td>{{ i.patientID }} </td>
+                    <td>{{ i.addInfo }}</td>
                     <td></td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
@@ -184,8 +187,11 @@
     import {auth , a ,rdv} from '../firebase/index'
     import {createUserWithEmailAndPassword} from 'firebase/auth'
     import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
-  export default {
+    import { onMounted } from 'vue'
+
+    export default {
       name: 'HomeView',
+
       data(){
           return{
               userData : [],
@@ -196,39 +202,88 @@
               rdv:[],
               selectedMedecin:[],
               showSignupForm: false,
-                showMedecinSection: false, // Ajout de la nouvelle variable
+              showMedecinSection: false, // Ajout de la nouvelle variable
               showPatientSection: false, // Ajoutez cette variable
-                showRDVSection: false,
-                showDashboardSection: true, 
+              showRDVSection: false,
+              showDashboardSection: true, 
              }
         },
-      methods: {
-          async signupRequest() {
-            let v=this;
-            v.xhrRequest=true;
-          try {
-          const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
-          const uid = userCredential.user.uid;
-          alert('Doctor Registered successfully');
-          const b = doc(a,uid);
-          await setDoc(b,{
-            name :this.name,
-            email: this.email,
-            specialite:this.specialite,
-            role : 'medecin'
-          });
-         let c = {
-          name :this.name,
-          email :this.email,
-          specialite: this.specialite,
-          role : 'medecin'
-         }
-         this.userData.push(c)
-        } catch (error) {
-          v.xhrRequest=false;
-          alert(`Error - ${error.message}`);
+
+    mounted() {
+    const userDataString = this.$route.query.userData;
+    if (userDataString) {
+      this.userData = JSON.parse(userDataString);
+      console.log(this.userData);
+    }
+    onSnapshot(rdv ,(querySnapshot) => {
+    const fbusers = []
+    querySnapshot.forEach((doc)=>{
+        const usero = {
+         date : doc.data().date,
+         time: doc.data().time,
+         patientID: doc.data().patientID,
+         status: doc.data().status,
+         firstName: doc.data().firstName,
+         lastName: doc.data().lastName,
+         addInfo: doc.data().addInfo,
+         id:doc.id,
+         selectedMedecin: null,
         }
+        fbusers.push(usero)
+    })
+     this.rdv = fbusers
+     this.loadingData = false;
+  });
+  onSnapshot(a, (querySnapshot) => {
+    const users = [];
+    querySnapshot.forEach((doc) => {
+      const user = doc.data();
+      user.uid = doc.id;
+      users.push(user);
+    });
+    this.userData = users;
+  });
+
+},
+
+      methods: {
+        async signupRequest() {
+  let v = this;
+  v.xhrRequest = true;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+    const uid = userCredential.user.uid;
+    alert('Doctor Registered successfully');
+    const b = doc(a, uid);
+    await setDoc(b, {
+      name: this.name,
+      email: this.email,
+      specialite: this.specialite,
+      role: 'medecin'
+    });
+    let c = {
+      name: this.name,
+      email: this.email,
+      specialite: this.specialite,
+      role: 'medecin'
+    };
+    this.userData.push(c);
+  } catch (error) {
+    v.xhrRequest = false;
+    alert(`Error - ${error.message}`);
+  } finally {
+    // Set xhrRequest to false after try or catch block
+    v.xhrRequest = false;
+  }
+},
+
+       
+      getUserFullName(patientID) {
+      const patient = this.rdv.find(i => i.patientID === patientID);
+      return patient ? `${patient.firstName} ${patient.lastName}` : '';
       },
+
+
       showDashboardManagement(){
         this.showDashboardSection= true;
         this.hideMedecinSection();
@@ -331,28 +386,7 @@
         return feedback.length;
       },*/
     },
-      mounted() {
-    const userDataString = this.$route.query.userData;
-    if (userDataString) {
-      this.userData = JSON.parse(userDataString);
-      console.log(this.userData);
-    }
-    onSnapshot(rdv ,(querySnapshot) => {
-    const fbusers = []
-    querySnapshot.forEach((doc)=>{
-        const usero = {
-         date : doc.data().date,
-         time: doc.data().time,
-         patientID: doc.data().patientID,
-         status: doc.data().status,
-         id:doc.id,
-         selectedMedecin: null,
-        }
-        fbusers.push(usero)
-    })
-     this.rdv = fbusers
-  
-  })
+    
   /*onSnapshot(fbk ,(querySnapshot) => {
   const fbusers = []
   querySnapshot.forEach((doc)=>{
@@ -368,8 +402,9 @@
   })
   this.RDVtab = fbusers
 })*/
+  
   }
-  }
+  
   </script>
   <style>
    .home{

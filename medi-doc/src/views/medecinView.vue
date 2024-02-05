@@ -55,27 +55,18 @@
            <h3 class="medecin-title"> Profil </h3> 
           <table class="medecin-table">
            
-            <tr>
-              <td>ID </td>
-              <td>{{med.uid}}</td>
+            <tr v-if="med.role === 'medecin'">
+              <td>Doctor's full name  </td>
+              <td>{{ med.name }}</td>
             </tr>
-            <tr>
-              <td>Last name </td>
-              <td>{{ med.lastName }}</td>
-            </tr>
-            <tr>
-            <td>First Name </td>
-            <td></td>
-            </tr>
-            <tr>
-              <td>Department</td>
-              <td></td>
+            <tr v-if="med.role === 'medecin'">
+              <td>Speciality</td>
+              <td>{{ med.specialite }}</td>
               </tr>
-            <tr>
-            <td>Email </td>
+            <tr v-if="med.role === 'medecin'">
+            <td>Email</td>
              <td> {{ newMedecinEmail || loggedInMedecinEmail }}</td>
               <td><button @click="updateEmail">Update</button></td>
-           
             </tr>
           
             <tr>
@@ -131,6 +122,7 @@
     <tr>
       <th>Date</th>
       <th>Time</th>
+      <th>full name</th>
       <th>Patient ID</th>
       <th>Report</th>
       <th>Actions</th>
@@ -140,6 +132,7 @@
     <tr v-for="value in filteredRDV" :key="value.id">
       <td>{{ value.date }}</td>
       <td>{{ value.time }}</td>
+      <td>{{ getPatientFullName(value.patientID) }}</td>
       <td>{{ value.patientID }}</td>
       <td>
         <div class="report-section">
@@ -210,6 +203,43 @@
       med:{}
     };
   },
+   
+  mounted() {
+  const userDataString = this.$route.query.userData;
+  const uid = this.$route.query.uid;
+
+  if (userDataString) {
+  this.userData = JSON.parse(userDataString);
+  this.uid = uid;
+
+  const user=auth.currentUser;
+
+  if(user){
+    this.loggedInMedecinEmail=user.email;
+    this.med = this.userData.find(user => user.email === this.loggedInMedecinEmail);
+  }
+  console.log(this.userData);
+  console.log(this.uid);
+}
+onSnapshot(rdv ,(querySnapshot) => {
+const fbusers = []
+querySnapshot.forEach((doc)=>{
+    const usero = {
+     date : doc.data().date,
+     time: doc.data().time,
+     patientID: doc.data().patientID,
+     status: doc.data().status,
+     medecinID: doc.data().medecinID,
+     id:doc.id,
+     report: doc.data().report || '', 
+    }
+    fbusers.push(usero)
+})
+this.rdv = fbusers
+console.log('Feedback Data:', this.feedbackData);
+})
+  },
+  
   computed: {
   countConsultations() {
     return this.rdv.filter(value => value.medecinID === this.uid).length;
@@ -233,6 +263,11 @@ uniqueReportId() {
     },
 },
   methods: {
+
+    getPatientFullName(patientID) {
+    const patient = this.userData.find(user => user.uid === patientID);
+    return patient ? `${patient.firstName} ${patient.lastName}` : 'Unknown';
+  },
 async updateEmail() {
 try {
   // Invitez l'utilisateur à saisir le nouvel e-mail
@@ -364,39 +399,7 @@ countReports() {
 
 
 
-  
-  mounted() {
-  const userDataString = this.$route.query.userData;
-  const uid = this.$route.query.uid;
-  if (userDataString) {
-  this.userData = JSON.parse(userDataString);
-  this.uid = uid;
-  const user=auth.currentUser;
-  if(user){
-    this.loggedInMedecinEmail=user.email;
-  }
-  console.log(this.userData);
-  console.log(this.uid);
-}
-onSnapshot(rdv ,(querySnapshot) => {
-const fbusers = []
-querySnapshot.forEach((doc)=>{
-    const usero = {
-     date : doc.data().date,
-     time: doc.data().time,
-     patientID: doc.data().patientID,
-     status: doc.data().status,
-     medecinID: doc.data().medecinID,
-     id:doc.id,
-     report: doc.data().report || '', 
-    }
-    fbusers.push(usero)
-})
-this.rdv = fbusers
-console.log('Feedback Data:', this.feedbackData);
-})
-  },
-  
+ 
 };
 </script>
 
