@@ -4,10 +4,10 @@
       <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
       <!-- Liens pour différentes sections -->
       <a href="#" @click.prevent="showDashboardManagement">Dashboard</a>
-      <a href="#" @click.prevent="showMedecinManagement">Doctors</a> 
+      <a href="#" @click.prevent="showMedecinManagement">HCP</a> 
       <a href="#" @click.prevent="showPatientManagement">Patients</a>
       <a href="#" @click.prevent="showRDVManagement">RDV</a>
-      <a href="#" @click.prevent="showServicesSection">Services</a>
+      <!--<a href="#" @click.prevent="showServicesSection">Services</a>-->
     </div> 
      <div class="content">
        <div class="head">
@@ -22,7 +22,7 @@
       <div  id="dashboard" v-if="showDashboardSection">
         <div class="box">
           <h3><img src="../image/doctor.png" alt="medecin"> 
-              <span class="space-after-text">Doctors</span>   {{ countMedecins }}</h3>
+              <span class="space-after-text">HCP</span>   {{ countMedecins }}</h3>
         </div>
         <div class="box">
             <h3><img src="../image/patient.png" alt="patient"> 
@@ -33,15 +33,15 @@
           <span class="space-after-text">Consultations</span> {{ rdv.length }}</h3>
         </div>
         <div class="box">
-         <h3><img src="../image/service.png" alt="service">
-          Services</h3>
+         <h3><img src="../image/service.png" alt="service"><span class="space-after-text">Services</span>
+          18</h3>
         </div>
       </div>
     </div>
     <div class="row">
     <div class="col-sm-5 m-auto"  v-if="showMedecinSection">
         <div class="text-center mb-4">
-            <h4>Add a doctor </h4>
+            <h4>Add a HCP </h4>
         </div>
         <form id="signup-form" @submit.prevent="signupRequest" class="form-container">
             <div class="row">
@@ -52,16 +52,28 @@
                 <div class="form-field col-sm-12">
                     <input type="email" id="email" v-model="email" placeholder="Email address" class="form-control form-control-lg">
                 </div>
-                
+            <div class="form-field col-sm-12">
+             <select v-model="selectedRole" required>
+               <option disabled value="" selected>HCP</option>
+               <option value="medecin">Doctor</option>
+               <option value="infirmier">Nurse</option>
+             </select>
+            </div>
                 <!-- Select Bar for Speciality -->
-                <div class="form-field col-sm-12">
+               <!-- <div class="form-field col-sm-12">
                     <select id="specialite" v-model="specialite" required>
                         <option disabled value="" selected>Spécialité</option>
                         <option value="cardiologie">Cardiologie</option>
                         <option value="dermatologie">Dermatologie</option>
                         <option value="généraliste">Généraliste</option>
                     </select>
-                </div>
+                </div>-->
+              <div class="form-field col-sm-12">
+               <select id="specialite" v-model="specialite" required>
+                <option disabled value="" selected>spéciality</option>
+                <option v-for="speciality in getSpecialities()" :value="speciality">{{ speciality }}</option>
+              </select>
+            </div>
                 
                 <!-- Password -->
                 <div class="form-field col-sm-12">
@@ -84,7 +96,7 @@
            <div class="table-container" style="margin-left: 8%;">
               <div class="table-wrapper">
                 <div class="med" v-if="showMedecinSection">
-                   <h3 class="medecin-title"> The doctors </h3> 
+                   <h3 class="medecin-title"> The healthcare professionals </h3> 
                       <table class="medecin-table">
                         <thead>
                           <tr>
@@ -147,12 +159,11 @@
              <tr>
               <th>Date</th>
               <th>Time</th>
+              <th>NSS</th>
               <th>Pantient full name</th>
-              <th>Patient ID</th>
-             
-              <th>Departement selected</th>
               <th></th>
-              <th>Doctor</th>
+              <th>Addtional Informations</th>
+              <th>HCP</th>
               
               
              </tr>
@@ -161,9 +172,9 @@
                  <tr v-for="(i,index) in rdv" :key="index">
                     <td> {{ i.date }} </td> 
                     <td> {{ i.time }} </td>
+                    <td></td>
                     <td>{{ getUserFullName(i.patientID) }}</td>
-                    <td>{{ i.patientID }} </td>
-                    <td>{{ i.department}}</td>
+                    <td>{{ i.addInfo }}</td>
                     <td></td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
@@ -195,6 +206,7 @@
 
       data(){
           return{
+              selectedRole: '', // Ajoutez cette ligne
               userData : [],
               email:'',
               name :'',
@@ -227,7 +239,6 @@
          firstName: doc.data().firstName,
          lastName: doc.data().lastName,
          addInfo: doc.data().addInfo,
-         department: doc.data().department,
          id:doc.id,
          selectedMedecin: null,
         }
@@ -249,13 +260,16 @@
 },
 
       methods: {
-      
-        getSelectedMedecinDepartment(patientID) {
-  const selectedRDV = this.rdv.find(rdvItem => rdvItem.patientID === patientID);
-  console.log('Selected RDV:', selectedRDV);
-  return selectedRDV ? selectedRDV.departement : '';
+   
+    getSpecialities() {
+  if (this.selectedRole === 'medecin') {
+    return ['Chief Medical Officer', 'General Medicine', 'Mental Health and Wellness','Pediatrics'];
+  } else if (this.selectedRole === 'infirmier') {
+    return ['nurse1', 'nurse2', 'nurse3'];
+  } else {
+    return [];
+  }
 },
-      
         async signupRequest() {
   let v = this;
   v.xhrRequest = true;

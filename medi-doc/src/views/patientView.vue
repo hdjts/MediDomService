@@ -217,10 +217,11 @@
 
     <form @submit.prevent="submitForm()" class="php-email-form">
       <div class="row">
-    <div class="col-md-4 form-group mt-3">
-      <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number" :data-rule="'minlen:4'" data-msg="Please enter at least 4 chars" required>
-      <div class="validate"></div>
-    </div>
+        <div class="col-md-4 form-group mt-3">
+  <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number" pattern="\d{3}-\d{2}-\d{4}" title="Please enter a valid NSS Number (e.g., 123-45-6789)" required>
+  <div class="validate"></div>
+</div>
+
 
     <div class="col-md-4 form-group mt-3">
   <input v-model="formData.firstName" type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name" :data-rule="'minlen:2'" data-msg="Please enter at least 2 characters" required>
@@ -255,6 +256,11 @@
       <input v-model="formData.date" type="date" name="date" class="form-control" id="date" >
       <div class="validate"></div>
     </div>
+    <div class="col-md-4 form-group mt-3">
+  <!-- Time Input -->
+  <input v-model="formData.time" type="time" name="time" class="form-control" id="time">
+  <div class="validate"></div>
+</div>
     
   
         <div class="col-md-4 form-group mt-3">
@@ -320,63 +326,98 @@
 
 
   
-
 <!-- ======= Doctors Section ======= -->
 <section id="doctors" class="doctors">
-    <div class="container">
-      <div class="section-title">
-        <h2>Doctors</h2>
-        <p>Meet our dedicated team of experienced healthcare professionals. Each doctor at MediDom is committed to delivering personalized and compassionate care to our patients.</p>
-      </div>
+  <div class="container">
+    <div class="section-title">
+      <h2>Medical Professionals</h2>
+      <p>Meet our dedicated team of experienced healthcare professionals. Each professional at MediDom is committed to delivering personalized and compassionate care to our patients.</p>
+    </div>
 
-      <div class="row">
-  <div v-for="(doctor, index) in doctors" :key="index" class="col-lg-6 mt-4">
-    <div class="member d-flex align-items-start">
-      <div class="pic"><img :src="doctor.image" class="img-fluid" alt="image"></div>
-      <div class="member-info">
-        <h4>{{ doctor.name }}</h4>
-        <span>{{ doctor.specialization }}</span>
-        <p>{{ doctor.description }}</p>
-        <div class="social">
-          <a :href="'#' + doctor.twitter"><i class='bx bxl-twitter'></i></a>
-          <a :href="'#' + doctor.facebook"><i class='bx bxl-facebook' ></i></a>
-          <a :href="'#' + doctor.instagram"><i class='bx bxl-instagram' ></i></a>
-          <a :href="'#' + doctor.linkedin"><i class='bx bxl-linkedin' ></i></a>
+    <!-- Doctors Section -->
+    <div class="row">
+      <div v-for="(doctor, index) in doctors" :key="index" class="col-lg-6 mt-4">
+        <!-- Doctor Card -->
+        <div class="member d-flex align-items-start">
+          <div class="pic"><img :src="doctor.image" class="img-fluid" alt="image"></div>
+          <div class="member-info">
+            <h4>{{ doctor.name }}</h4>
+            <span>{{ doctor.specialization }}</span>
+            <p>{{ doctor.description }}</p>
+            <div class="social">
+              <a :href="'#' + doctor.twitter"><i class='bx bxl-twitter'></i></a>
+              <a :href="'#' + doctor.facebook"><i class='bx bxl-facebook' ></i></a>
+              <a :href="'#' + doctor.instagram"><i class='bx bxl-instagram' ></i></a>
+              <a :href="'#' + doctor.linkedin"><i class='bx bxl-linkedin' ></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Paramedical Professionals Section -->
+    <div class="section-title mt-5">
+      <h2>Paramedical Professionals</h2>
+      <p>Meet our dedicated team of paramedical professionals. They play a crucial role in providing essential healthcare services to our patients.</p>
+    </div>
+
+    <div class="row">
+      <div v-for="(paramedic, index) in paramedicalProfessionals" :key="index" class="col-lg-6 mt-4">
+        <!-- Paramedic Card -->
+        <div class="member d-flex align-items-start">
+          <div class="pic"><img :src="paramedic.image" class="img-fluid" alt="image"></div>
+          <div class="member-info">
+            <h4>{{ paramedic.name }}</h4>
+            <span>{{ paramedic.specialization }}</span>
+            <p>{{ paramedic.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
+</section>
+<!-- End Doctors Section -->
 
+
+<!-- ======= Frequently Asked Questions Section ======= -->
+<section id="faq" class="faq section-bg">
+  <div class="container">
+    <div class="section-title">
+      <h2>Frequently Asked Questions</h2>
+      <p>Find answers to common queries about our services, appointments, billing, and more. If you have a question not covered here, feel free to reach out to our support team.</p>
     </div>
-  </section><!-- End Doctors Section -->
 
-     <!-- ======= Frequently Asked Questions Section ======= -->
-     <section id="faq" class="faq section-bg">
-    <div class="container">
-      <div class="section-title">
-        <h2>Frequently Asked Questions</h2>
-        <p>Find answers to common queries about our services, appointments, billing, and more. If you have a question not covered here, feel free to reach out to our support team.</p>
-      </div>
+ 
+<div class="faq-list">
+  <ul>
+    <li v-for="(faq, index) in faqs" :key="index" data-aos="fade-up">
+      <i class="bx bx-help-circle icon-help"></i>
+      <a
+        v-bind:data-bs-toggle="'collapse'"
+        v-bind:data-bs-target="'#faq-list-' + (index + 1)"
+        v-bind:class="{ 'collapsed': !faq.expanded, 'show': faq.expanded }"
+        @click="toggleCollapse(index)"
+      >
+        {{ faq.question }}
+        <i
+  v-bind:class="[{ 'bi-chevron-down': !faq.expanded, 'bi-chevron-up': faq.expanded }, 'icon-show']"
+></i>
 
-      <div class="faq-list">
-        <ul>
-          <li v-for="(faq, index) in faqs" :key="index" data-aos="fade-up">
-            <i class="bx bx-help-circle icon-help"></i>
-            <a :data-bs-toggle="'collapse'" :data-bs-target="'#faq-list-' + (index + 1)"
-               :class="{ 'collapsed': !faq.expanded, 'show': faq.expanded }"
-               @click="toggleCollapse(index)">
-              {{ faq.question }}
-              <i class="bx" :class="[{ 'bx-chevron-down': !faq.expanded, 'bx-chevron-up': faq.expanded }, 'icon-show']"></i>
-            </a>
-            <div :id="'faq-list-' + (index + 1)" class="collapse" data-bs-parent=".faq-list">
-              <p>{{ faq.answer }}</p>
-            </div>
-          </li>
-        </ul>
+      </a>
+      <div
+        v-bind:id="'faq-list-' + (index + 1)"
+        class="collapse"
+        v-bind:class="{ 'show': faq.expanded }"
+        data-bs-parent=".faq-list"
+      >
+        <p>{{ faq.answer }}</p>
       </div>
-    </div>
-  </section><!-- End Frequently Asked Questions Section -->
+    </li>
+  </ul>
+</div>  </div>
+</section> <!-- End Frequently Asked Questions Section -->
+
 
 
 
@@ -552,6 +593,8 @@ export default {
       phone: '',
       location: '',
       date: '',
+      time: '',
+
       department: '',
       uid: '',
 
@@ -582,6 +625,7 @@ export default {
         duration   : 20,
       },
                 ],
+
                 
       services: [
         {
@@ -666,6 +710,32 @@ export default {
           image: '/src/image/doctors-4.jpg',
         },
       ],
+      paramedicalProfessionals: [
+  {
+    name: "John Paramedic",
+    specialization: "Paramedicine",
+    description: "John is a dedicated paramedic with expertise in providing essential healthcare services.",
+    image: '/src/image/param2.jpg',
+  },
+  {
+    name: "Emily Medic",
+    specialization: "Emergency Medical Services",
+    description: "Emily is a skilled paramedic specializing in emergency medical services and rapid response.",
+    image: '/src/image/parm1.jpg',
+  },
+  {
+    name: "Amina Healthcare",
+    specialization: "Healthcare Support",
+    description: "Amina plays a vital role in healthcare support, ensuring patients receive the necessary care and assistance.",
+    image: '/src/image/param5.jpg',
+  },
+  {
+    name: "Sarah Paramedic",
+    specialization: "Critical Care",
+    description: "Sarah specializes in critical care, providing expert assistance in challenging medical situations",
+    image:'/src/image/param4.avif',
+  },
+],
       faqs: [
         {
           question: "Can I request a specific doctor for my appointment?",
@@ -724,6 +794,8 @@ export default {
         phone:'',
         location:'',
         date:'',
+        time: '',
+
         department:'',
       },
       formFeedBk: {
@@ -807,9 +879,7 @@ export default {
         this.nextStep();
       },
       confirmDemande() {
-        // Add your logic to handle confirmation
-        // This is where you can proceed to the next step or submit the form
-        // For now, let's just go to the next step
+       
         this.nextStep();
       },
       selectSchedule(schedule) {
