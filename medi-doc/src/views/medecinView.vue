@@ -6,7 +6,7 @@
     <a href="#" @click.prevent="showProfilManagement">Profil</a> 
     <a href="#" @click.prevent="showPatientManagement">Patients</a>
     <a href="#" @click.prevent="showRDVManagement">RDV</a>
-    <a href="#" @click.prevent="showFeedbackSection">Feedback</a>
+    <!--<a href="#" @click.prevent="showFeedbackSection">Feedback</a>-->
   </div> 
  <div class="content">
     <div class="head">
@@ -32,7 +32,7 @@
        <h3><img src="../image/compte_rendue.png" alt="service">
        <span class="space-after-text">Compte rendu</span>{{countReports}}</h3>
       </div>
-      <div class="box">
+    <!--  <div class="box">
   <h3>
     <img src="../image/patient.png" alt="patient">
     <span class="space-after-text">Feedbacks</span> {{ countFeedbacks }}
@@ -40,10 +40,10 @@
   <ul v-if="showFeedbackSection">
     <li v-for="feedback in feedbackData" :key="feedback.id">
       <p>{{ feedback.text }}</p>
-      <!-- Add other feedback properties as needed -->
+   Add other feedback properties as needed 
     </li>
   </ul>
-</div>
+</div>-->
     </div>
 
 
@@ -66,13 +66,13 @@
             <tr v-if="med.role === 'medecin'">
             <td>Email</td>
              <td> {{ newMedecinEmail || loggedInMedecinEmail }}</td>
-              <td><button @click="updateEmail">Update</button></td>
+              <!--<td><button @click="updateEmail">Update</button></td>-->
             </tr>
           
-            <tr>
+          <!--  <tr>
               <td>Phone number</td>
               <td></td>
-            </tr>
+            </tr>-->
             
           </table>
 
@@ -109,7 +109,7 @@
                 <td v-if="u.role === 'patient'">{{ u.phone}}</td>
                 <td v-if="u.role === 'patient'">{{ u.email }}</td>   
                 <td v-if="u.role === 'patient'">
-                <button @click="deletePatient(u.patientID)" class="boutt">Delete</button>
+                <button @click="deletePatient(u.uid)" class="boutt">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -142,14 +142,14 @@
           </div>
           <div v-else>
             {{ value.report }}
-            <button @click="deleteReport(value.id)">Delete Report</button>
+            <button id="btto" @click="deleteReport(value.id)">Delete Report</button>
           </div>
         </div>
       </td>
       <td>
         
-        <button @click="updateReport(value.id)">Update compte rendu</button>
-        <button @click="cancelRDV(value.id)">Annuler RDV</button>
+        <button id="btto" @click="updateReport(value.id)">Update compte rendu</button>
+        <button id="btto" @click="cancelRDV(value.id)">Annuler RDV</button>
       </td>
     </tr>
   </tbody>
@@ -349,7 +349,25 @@ async updateReport(rdvId) {
       console.error('Erreur lors de la suppression du rapport', error);
     }
   },
+  async deletePatient(patientID) {
+  try {
+    // Delete patient from Firestore
+    await deleteDoc(doc(a, patientID));
 
+    // Remove patient from userData
+    this.userData = this.userData.filter((user) => user.uid !== patientID);
+
+    // Remove patient's appointments from rdv
+    const appointmentsToDelete = this.rdv.filter((appointment) => appointment.patientID === patientID);
+    await Promise.all(appointmentsToDelete.map(async (appointment) => {
+      await deleteDoc(doc(rdv, appointment.id));
+    }));
+
+    alert('Patient and their appointments deleted successfully');
+  } catch (error) {
+    console.error('Error deleting patient:', error);
+  }
+},
   showDashboardManagement(){
       this.showDashboardSection= true;
       this.hideProfilSection();
@@ -419,7 +437,9 @@ width: 100%;
 height: 100px;
 margin-bottom: 10px;
 }
-
+#btto{
+  background-color:#41B8D5;
+}
 .report-section {
 margin-bottom: 15px;
 }
@@ -537,7 +557,7 @@ margin-top: 10px;
 
 /* Style buttons */
 button {
-background-color: #41B8D5;
+background-color:red;
 color: white;
 border: none;
 padding: 10px 16px;
@@ -547,11 +567,6 @@ transition: background-color 0.3s;
 width: 100%; /* Make buttons take full width */
 display: block; /* Stack buttons on top of each other */
 margin-top: 5px; /* Add some spacing between stacked buttons */
-}
-
-/* Hover effect on buttons */
-button:hover {
-background-color: #3677A3;
 }
 
 /* Style textarea */

@@ -144,7 +144,7 @@
                     <td v-if="u.role === 'patient'">{{ u.phone }}</td>
                     <td v-if="u.role === 'patient'">{{ u.email }}</td>   
                     <td v-if="u.role === 'patient'">
-                        <button @click="deletePatient(u.patientID)" class="boutt">Delete</button>
+                        <button @click="deletePatient(u.uid)" class="boutt">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -159,10 +159,10 @@
              <tr>
               <th>Date</th>
               <th>Time</th>
-              <th>NSS</th>
+              <!--<th>NSS</th>-->
               <th>Pantient full name</th>
-              <th></th>
-              <th>Addtional Informations</th>
+              <th>Patient ID</th>
+              <th>Departement selected</th>
               <th>HCP</th>
               
               
@@ -172,10 +172,10 @@
                  <tr v-for="(i,index) in rdv" :key="index">
                     <td> {{ i.date }} </td> 
                     <td> {{ i.time }} </td>
-                    <td></td>
-                    <td>{{ getUserFullName(i.patientID) }}</td>
-                    <td>{{ i.addInfo }}</td>
-                    <td></td>
+                   <!-- <td></td>-->
+                    <td>{{ getUserFullName(i.patientID)}}</td>
+                    <td>{{ i.patientID }}</td>
+                    <td>{{ i.department}}</td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
                      <select v-model="selectedMedecin[index]" required>
@@ -238,7 +238,7 @@
          status: doc.data().status,
          firstName: doc.data().firstName,
          lastName: doc.data().lastName,
-         addInfo: doc.data().addInfo,
+         department: doc.data().department,
          id:doc.id,
          selectedMedecin: null,
         }
@@ -261,11 +261,16 @@
 
       methods: {
    
+    getSelectedMedecinDepartment(patientID) {
+  const selectedRDV = this.rdv.find(rdvItem => rdvItem.patientID === patientID);
+  console.log('Selected RDV:', selectedRDV);
+  return selectedRDV ? selectedRDV.departement : '';
+    },
     getSpecialities() {
   if (this.selectedRole === 'medecin') {
     return ['Chief Medical Officer', 'General Medicine', 'Mental Health and Wellness','Pediatrics'];
   } else if (this.selectedRole === 'infirmier') {
-    return ['nurse1', 'nurse2', 'nurse3'];
+    return ['Paramedicine', 'Emergency Medical Services', 'Healthcare Support','Critical Care'];
   } else {
     return [];
   }
@@ -344,23 +349,39 @@
        hideMedecinSection() {
         this.showMedecinSection = false;
       },
-      async affecter(rdvItem,index) {
-      try {
-        const selectedMedecinId = this.selectedMedecin[index];
-        if (selectedMedecinId) {
-          const rdvRef = doc(rdv, rdvItem.id); 
-          await updateDoc(rdvRef, {
-            medecinID: selectedMedecinId,
-            status:"coffirmer"
-          });
-          alert('Rendez-vous mis à jour avec le médecin');
-        } else {
-          alert('Veuillez sélectionner un médecin');
-        }
-      } catch (error) {
-        console.error('Erreur lors de la mise à jour du rendez-vous', error);
+     
+      async affecter(rdvItem, index) {
+  try {
+    const selectedMedecinId = this.selectedMedecin[index];
+    if (selectedMedecinId) {
+      const selectedMedecin = this.userData.find(user => user.uid === selectedMedecinId);
+      if (!selectedMedecin) {
+        alert('Selected doctor not found');
+        return;
       }
-      },
+      
+      // Check if the department matches the doctor's specialite
+      if (rdvItem.department !== selectedMedecin.specialite) {
+        alert(`The selected doctor's specialty (${selectedMedecin.specialite}) does not match the department (${rdvItem.department})`);
+        return;
+      }
+
+      const rdvRef = doc(rdv, rdvItem.id); 
+      await updateDoc(rdvRef, {
+        medecinID: selectedMedecinId,
+        status: "confirmé"
+      });
+      alert('Rendez-vous updated with the doctor');
+    } else {
+      alert('Please select a doctor');
+    }
+  } catch (error) {
+    console.error('Error updating appointment:', error);
+    alert('Error updating appointment. Please try again later.');
+  }
+},
+
+
        async deleteMedecin(uid) {
         try {
           await deleteDoc(doc(a, uid));
@@ -370,16 +391,30 @@
           console.error('Erreur lors de la suppression du médecin', error);
         }
       },
+
+
       async deletePatient(patientID) {
-        try {
-          await deleteDoc(doc(a, patientID));
-          this.userData = this.userData.filter((user) => user.patientID !== patientID);
-          alert('patient deleted successfully');
-        } catch (error) {
-          console.error('Erreur lors de la suppression du patient', error);
-        }
-      },
-      async logout() {
+  try {
+    // Delete patient from Firestore
+    await deleteDoc(doc(a, patientID));
+
+    // Remove patient from userData
+    this.userData = this.userData.filter((user) => user.uid !== patientID);
+
+    // Remove patient's appointments from rdv
+    const appointmentsToDelete = this.rdv.filter((appointment) => appointment.patientID === patientID);
+    await Promise.all(appointmentsToDelete.map(async (appointment) => {
+      await deleteDoc(doc(rdv, appointment.id));
+    }));
+
+    alert('Patient and their appointments deleted successfully');
+  } catch (error) {
+    console.error('Error deleting patient:', error);
+  }
+},
+
+
+  async logout() {
   try {
     await signOut(auth);
     alert('Déconnexion réussie');
