@@ -7,7 +7,7 @@
       <a href="#" @click.prevent="showMedecinManagement">HCP</a> 
       <a href="#" @click.prevent="showPatientManagement">Patients</a>
       <a href="#" @click.prevent="showRDVManagement">RDV</a>
-      <!--<a href="#" @click.prevent="showServicesSection">Services</a>-->
+      <a href="#" @click.prevent="showServiceManagement">feedback</a>
     </div> 
      <div class="content">
        <div class="head">
@@ -33,8 +33,8 @@
           <span class="space-after-text">Consultations</span> {{ rdv.length }}</h3>
         </div>
         <div class="box">
-         <h3><img src="../image/service.png" alt="service"><span class="space-after-text">Services</span>
-          18</h3>
+         <h3><img src="../image/service.png" alt="service"><span class="space-after-text">Feedbacks</span>
+          {{Feedback.length}}</h3>
         </div>
       </div>
     </div>
@@ -169,7 +169,8 @@
              </tr>
            </thead>
              <tbody class="conte">
-                 <tr v-for="(i,index) in rdv" :key="index">
+                 <tr v-show="i.status ==='en attente'" v-for="(i,index) in rdv" :key="index" :style="{ backgroundColor: i.Emergency ? 'red' : '' } ">
+                   
                     <td> {{ i.date }} </td> 
                     <td> {{ i.time }} </td>
                    <!-- <td></td>-->
@@ -188,6 +189,37 @@
                </tbody>
            </table>
         </div> 
+        <div  v-if="showServiceSection">
+          <h3 class="medecin-title"> The Feedbacks </h3>
+             <table class="medecin-table">
+              <thead>
+               <tr>
+                <th>Patient ID</th>
+                <th>name</th>
+                <th>email</th>
+                <!--<th>NSS</th>-->
+                <th>subject</th>
+                <th>message</th>
+                
+                
+                
+               </tr>
+             </thead>
+               <tbody class="conte">
+                   <tr v-for="(i,index) in Feedback" :key="index" :style="{ backgroundColor: i.Emergency ? 'red' : '' }">
+                       <td> {{ i.patientID }} </td> 
+                      <td> {{ i.name}} </td>
+                     <!-- <td></td>-->
+
+                      <td>{{ i.email }}</td>
+                      <td>{{ i.subject}}</td>
+                      <td>{{ i.message}}</td>
+                      
+                     
+                    </tr>
+                 </tbody>
+             </table>
+          </div> 
       </div> 
         </div>
         </div>
@@ -196,7 +228,7 @@
 </template>
 
   <script>
-    import {auth , a ,rdv} from '../firebase/index'
+    import {auth , a ,rdv ,fbk} from '../firebase/index'
     import {createUserWithEmailAndPassword} from 'firebase/auth'
     import {collection , onSnapshot, doc ,addDoc,setDoc,deleteDoc,updateDoc,query,where,getDocs} from 'firebase/firestore'
     import { onMounted } from 'vue'
@@ -213,12 +245,14 @@
               password:'',
               specialite:'',
               rdv:[],
+              Feedback:[],
               selectedMedecin:[],
               showSignupForm: false,
               showMedecinSection: false, // Ajout de la nouvelle variable
               showPatientSection: false, // Ajoutez cette variable
               showRDVSection: false,
               showDashboardSection: true, 
+              showServiceSection:false,
              }
         },
 
@@ -234,6 +268,8 @@
         const usero = {
          date : doc.data().date,
          time: doc.data().time,
+         Emergency:doc.data().Emergency,
+         message:doc.data().messsage,
          patientID: doc.data().patientID,
          status: doc.data().status,
          firstName: doc.data().firstName,
@@ -256,11 +292,25 @@
     });
     this.userData = users;
   });
+  onSnapshot(fbk ,(querySnapshot) => {
+  const fbusers = []
+  querySnapshot.forEach((doc)=>{
+      const usero = {
+       name : doc.data().name,
+       email: doc.data().email,
+       patientID: doc.data().patientID,
+       message: doc.data().message,
+       id:doc.id,
+       subject: doc.data().subject || '', 
+      }
+      fbusers.push(usero)
+  })
+  this.Feedback = fbusers
+})
 
 },
 
       methods: {
-   
     getSelectedMedecinDepartment(patientID) {
   const selectedRDV = this.rdv.find(rdvItem => rdvItem.patientID === patientID);
   console.log('Selected RDV:', selectedRDV);
@@ -317,12 +367,14 @@
         this.hideMedecinSection();
         this.hideRDVSection();
         this.hidePatientSection();
+        this.showServiceSection= false;
       },
       hideDashboardManagement(){
         this.showDashboardSection= false;
       },
       showPatientManagement(){
         this.showPatientSection=true;
+        this.showServiceSection= false;
         this.hideMedecinSection();
         this.hideRDVSection();
         this.hideDashboardManagement();
@@ -336,6 +388,7 @@
         this.hideMedecinSection();
         this.hidePatientSection();
         this.hideDashboardManagement();
+        this.showServiceSection= false;
       },
       hideRDVSection(){
         this.showRDVSection=false;
@@ -345,6 +398,14 @@
       this.hidePatientSection();
       this.hideRDVSection();
       this.hideDashboardManagement();
+      this.showServiceSection= false;
+       },
+       showServiceManagement() {
+      this.showMedecinSection = false; // Affiche le formulaire et le tableau des médecins
+      this.hidePatientSection();
+      this.hideRDVSection();
+      this.hideDashboardManagement();
+      this.showServiceSection = true;
        },
        hideMedecinSection() {
         this.showMedecinSection = false;
@@ -371,6 +432,8 @@
         medecinID: selectedMedecinId,
         status: "confirmé"
       });
+      rdvItem.status = "confirmé"
+      
       alert('Rendez-vous updated with the doctor');
     } else {
       alert('Please select a doctor');
@@ -449,21 +512,7 @@
       },*/
     },
     
-  /*onSnapshot(fbk ,(querySnapshot) => {
-  const fbusers = []
-  querySnapshot.forEach((doc)=>{
-      const usero = {
-       name : doc.data().name,
-       email: doc.data().email,
-       patientID: doc.data().patientID,
-       message: doc.data().message,
-       id:doc.id,
-       subject: doc.data().subject || '', 
-      }
-      fbusers.push(usero)
-  })
-  this.RDVtab = fbusers
-})*/
+  
   
   }
   

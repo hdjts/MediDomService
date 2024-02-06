@@ -520,6 +520,9 @@ justify-content: center; /* Centralise le contenu verticalement à l'intérieur 
 &:hover {
 transform: scale(1.05);
 }
+&:nth-child(3){
+  margin-inline: auto;
+}
 }
 h3 {
 font-weight: bold;

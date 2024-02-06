@@ -218,7 +218,7 @@
     <form @submit.prevent="submitForm()" class="php-email-form">
       <div class="row">
         <div class="col-md-4 form-group mt-3">
-  <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number" pattern="\d{3}-\d{2}-\d{4}" title="Please enter a valid NSS Number (e.g., 123-45-6789)" required>
+  <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number"  title="Please enter a valid NSS Number (e.g., 123-45-6789)" required>
   <div class="validate"></div>
 </div>
 
@@ -280,7 +280,7 @@
         
         <div class="col-md-4 form-group mt-3">
           <div class="checkbox-wrapper">
-            <input id="terms-checkbox-37" name="checkbox" type="checkbox">
+            <input id="terms-checkbox-37" v-model="formData.Emergency" name="checkbox" type="checkbox">
             <label class="terms-label" for="terms-checkbox-37">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200" class="checkbox-svg">
                 <mask fill="white" id="path-1-inside-1_476_5-37">
@@ -795,7 +795,8 @@ export default {
         location:'',
         date:'',
         time: '',
-
+        Emergency:false,
+        message:'',
         department:'',
       },
       formFeedBk: {
@@ -931,12 +932,16 @@ export default {
           location:this.formData.location,
           department:this.formData.department,
           patientID: this.uid,
+          time: this.formData.time,
+          Emergency:this.formData.Emergency,
+          message:this.formData.message,
           status: 'en attente',
         });
         const Ref = doc(a, this.uid);
         await updateDoc(Ref, {
           nss: this.formData.nss,
           date: this.formData.date,
+          time: this.formData.time,
           firstName:this.formData.firstName,
           lastName:this.formData.lastName,
           age:this.formData.age,
