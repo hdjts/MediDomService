@@ -351,6 +351,10 @@ async updateReport(rdvId) {
   },
   async deletePatient(patientID) {
   try {
+    // Confirmation alert
+    const confirmed = confirm("Are you sure you want to delete the patient?");
+    if (!confirmed) return; // If not confirmed, exit the function
+
     // Delete patient from Firestore
     await deleteDoc(doc(a, patientID));
 
