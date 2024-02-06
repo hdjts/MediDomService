@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" >
     <div class="sidebar">
       <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
       <!-- Liens pour différentes sections -->
@@ -118,7 +118,7 @@
                      </tbody>
                   </table>
                 </div>
-    <div class="med" v-if="showPatientSection" style="text-align: center;margin-left:70px">
+    <div class="med" v-if="showPatientSection" >
     <h3 class="medecin-title"> The patients </h3> 
     <div class="table-responsive">
         <table class="medecin-table table mx-auto">
@@ -179,7 +179,7 @@
                     <td>{{ i.department}}</td>
                    <td>
                     <form @submit.prevent="()=>affecter(i,index)">
-                     <select v-model="selectedMedecin[index]" required>
+                     <select class="hh" v-model="selectedMedecin[index]" required>
                       <option v-show="medecin.role=='medecin'" v-for="medecin in userData" :value="medecin.uid">{{ medecin.email }}</option>
                       </select>
                       <button type="submit">✔</button>
@@ -520,6 +520,7 @@
   <style>
    .home{
        display: flex;
+       width: 100%;
   }
   .sidebar {
       position: fixed; /* Fixe la barre latérale à la page */
@@ -563,6 +564,7 @@
   .content {
       min-height: 100vh; /* Au moins la hauteur de l'écran */
       margin-top: 20px;
+      width: 100%;
   }
   
     h1{
@@ -704,9 +706,7 @@
       color:white;
       border: none;
   }
-  .med{
-    margin-left: 5%;
-  }
+ 
   .form-container {
     display: flex;
     flex-wrap: wrap;
@@ -721,7 +721,6 @@
   }
   
   input, select {
-    width: 500px;
     padding: 12px; /* Ajustez la taille du padding selon vos préférences */
     margin-bottom: 15px;
   }
@@ -737,5 +736,8 @@ button {
   }
   #btt{
     width: 100%;
+  }
+  .hh{
+    width: auto;
   }
     </style>

@@ -1064,13 +1064,15 @@ a:hover {
 h1,
 h2,
 h3,
-h4,
 h5,
 h6 {
   font-family: "Raleway", sans-serif;
   color: white;
 }
-
+h6 {
+  font-family: "Raleway", sans-serif;
+  color: #3291e6;
+}
 
 
 

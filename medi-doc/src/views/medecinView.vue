@@ -10,7 +10,7 @@
   </div> 
  <div class="content">
     <div class="head">
-      <div class="coté" style="margin-left: 80px;"><h1>Medecin Dashboard</h1>
+      <div class="coté" style="margin-left: 80px;"><h1>HCP Dashboard</h1>
       </div>
       <div class="coté">
         <a href="Login">
