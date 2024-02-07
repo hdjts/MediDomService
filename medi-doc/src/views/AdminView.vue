@@ -721,8 +721,12 @@
   }
   
   input, select {
+    width: 500px;
     padding: 12px; /* Ajustez la taille du padding selon vos préférences */
     margin-bottom: 15px;
+  }
+  .hh{
+    width: auto;
   }
 button {
     width: 100px; 
@@ -736,8 +740,5 @@ button {
   }
   #btt{
     width: 100%;
-  }
-  .hh{
-    width: auto;
   }
     </style>

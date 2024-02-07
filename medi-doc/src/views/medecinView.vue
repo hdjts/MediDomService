@@ -1,4 +1,5 @@
 <template>
+  <div class="home" >
   <div class="sidebar">
     <img src="../image/logoo-removebg-preview.png" alt="Logo" class="logo">
     <!-- Liens pour différentes sections -->
@@ -10,7 +11,7 @@
   </div> 
  <div class="content">
     <div class="head">
-      <div class="coté" style="margin-left: 80px;"><h1>HCP Dashboard</h1>
+      <div class="coté" style="margin-left: 80px;"><h1>Medecin Dashboard</h1>
       </div>
       <div class="coté">
         <a href="Login">
@@ -115,9 +116,9 @@
             </tbody>
           </table>
        </div>
-       <div style="margin-left:90px;" v-if="showRDVSection">
+       <div class="med" style="margin-left:90px;" v-if="showRDVSection">
         <h3 class="medecin-title"> The RDV </h3>
-<table>
+<table class="medecin-table" >
   <thead>
     <tr>
       <th>Date</th>
@@ -171,7 +172,7 @@
    </div>
    
 </div>
-
+</div>
 
 </template>
 <script>
@@ -433,204 +434,33 @@ countReports() {
  
 };
 </script>
-
 <style scoped>
-/* Add styles for textarea and report section */
-textarea {
-width: 100%;
-height: 100px;
-margin-bottom: 10px;
-}
-#btto{
-  background-color:#41B8D5;
-}
-.report-section {
-margin-bottom: 15px;
-}
 
-.no-report {
-color: #888;
-font-style: italic;
-}
-h1{
-    color: #3677A3;
-    font-weight: bold;
-    font-size: 36px;
-    margin-bottom: 10px;
-    
+  #btto{
+    background-color:#41B8D5;   
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Make buttons take full width */
+    display: block; /* Stack buttons on top of each other */
+    margin-top: 5px; /* Add some spacing between stacked buttons */
+
   }
-.content {
-min-height: 100vh; /* Au moins la hauteur de l'écran */
-margin-top: 20px;
-}
-.head{
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between; /* Ajustez cela selon vos besoins pour espacer les boîtes */
-
-}
-.coté{
-display: flex;
-flex-direction: column;
-
-}
-#dashboard {
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between; /* Ajustez cela selon vos besoins pour espacer les boîtes */
-}
-.log {
-  position: absolute;
-  top: 10px; /* Adjust the top distance as needed */
-  right: 10px; /* Adjust the right distance as needed */
-  border-radius: 20px;
-  height: 44px;
-  width: 150px;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 0 30px;
-  letter-spacing: 1px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: #41B8D5;
-  color: white;
-  border: none;
-}
-.log:hover{
-background-color: #3677A3;
-}
-.box {
-display: flex;
-flex-direction: column;
-width: 40%;
-height: 200px;
-border: 4px solid #41B8D5;
-border-radius: 20px;
-margin: 20px;
-margin-left: 60px;
-padding: 20px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-background-color: #fff;
-transition: transform 0.3s ease-in-out;
-align-items: center; /* Centralise le contenu horizontalement à l'intérieur de la boîte */
-justify-content: center; /* Centralise le contenu verticalement à l'intérieur de la boîte */
-  
-&:hover {
-transform: scale(1.05);
-}
-&:nth-child(3){
-  margin-inline: auto;
-}
-}
-h3 {
-font-weight: bold;
-font-size: 28px;
-margin-bottom: 10px;
-text-align: center;
-color: #3677A3;
-margin: 0;
-}
-.box img {
-margin-right: 30px; /* Ajustez la marge en fonction de l'espace souhaité entre l'image et le texte */
-}
-.space-after-text {
-margin-right: 20px; /* Ajustez la valeur de la marge selon vos préférences */
-}
-/* Apply general styles to the table */
-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: 20px;
-}
-
-/* Style table header */
-thead {
-background-color: #909394;
-color: white;
-}
-
-th, td {
-padding: 12px;
-border: 1px solid #ddd;
-text-align: left;
-}
-
-/* Add some spacing to the report section */
-.report-section {
-margin-top: 10px;
-}
-
-/* Style buttons */
-button {
-background-color:red;
-color: white;
-border: none;
-padding: 10px 16px;
-margin-right: 5px;
-cursor: pointer;
-transition: background-color 0.3s;
-width: 100%; /* Make buttons take full width */
-display: block; /* Stack buttons on top of each other */
-margin-top: 5px; /* Add some spacing between stacked buttons */
-}
-
-/* Style textarea */
 textarea {
-width: 100%;
-padding: 8px;
-margin-bottom: 10px;
-}
-
-/* Style the "compte rendu vide" message */
-.no-report {
-color: #888;
-}
-
-/* Apply alternating background color to table rows for better readability */
-tbody tr:nth-child(even) {
-background-color: #f2f2f2;
-}
-
-/* Hover effect on table rows */
-tbody tr:hover {
-background-color: #ddd;
-}
-
-/* Responsive styling for small screens */
-@media screen and (max-width: 600px) {
-table {
-  border: 1px solid #ddd;
-}
-
-th, td {
-  display: block;
   width: 100%;
-  box-sizing: border-box;
-}
+  padding: 8px;
+  margin-bottom: 10px;
+  }
+  
+  /* Style the "compte rendu vide" message */
+  .no-report {
+  color: #888;
+  }
+  .box:nth-child(3){
+    margin-inline: auto;
+  }
 
-/* Hide the header when not needed on small screens */
-thead {
-  display: none;
-}
-}
-.medecin-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  padding: 10px;
-  background-color: #41B8D5;
-  color: white;
-}
-.feedback-section {
-    margin-top: 20px;
-}
-
-.feedback-item {
-    background-color: #f0f0f0;
-    padding: 10px;
-    margin-bottom: 10px;
-}
 </style>
