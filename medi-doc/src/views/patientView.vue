@@ -218,7 +218,8 @@
     <form @submit.prevent="submitForm()" class="php-email-form">
       <div class="row">
         <div class="col-md-4 form-group mt-3">
-  <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number"  title="Please enter a valid NSS Number (e.g., 123-45-6789)" required>
+  <input v-model="formData.nss" type="text" name="nss" class="form-control" id="nss" placeholder="NSS Number"  title="Please enter a valid NSS Number (e.g., 123-45-6789)" 
+         pattern="\d{3}-\d{2}-\d{4}" required>
   <div class="validate"></div>
 </div>
 
